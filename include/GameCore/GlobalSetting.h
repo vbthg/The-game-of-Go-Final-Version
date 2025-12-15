@@ -1,13 +1,15 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <functional>
 
-class GlobalSetting {
+class GlobalSetting
+{
 public:
     static GlobalSetting& getInstance();
 
-    float musicVolume; // 0.0 - 100.0
-    float sfxVolume;   // 0.0 - 100.0
+    float musicVolume;
+    float sfxVolume;
 
     int stoneThemeIndex;
     int boardThemeIndex;
@@ -16,11 +18,21 @@ public:
     int timeLimitIndex;
     int komiIndex;
 
-
     int getTimeLimitInSeconds() const;
     float getKomiValue() const;
     std::string getBoardTextureKey(int size) const;
     std::string getStoneTextureKey(bool isBlack, int size) const;
+    std::string getSoundKey(const std::string& actionType, bool isBlack) const;
+
+    void setOnThemeChanged(std::function<void()> callback)
+    {
+        m_themeChangedCallback = callback;
+    }
+
+    void notifyThemeChanged()
+    {
+        if (m_themeChangedCallback) m_themeChangedCallback();
+    }
 
     void saveToFile(const std::string& filename = "assets/setting.txt");
     void loadFromFile(const std::string& filename = "assets/setting.txt");
@@ -30,4 +42,7 @@ private:
 
     GlobalSetting(const GlobalSetting&) = delete;
     void operator=(const GlobalSetting&) = delete;
+
+
+    std::function<void()> m_themeChangedCallback;
 };

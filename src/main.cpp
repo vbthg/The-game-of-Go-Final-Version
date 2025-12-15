@@ -1,5 +1,6 @@
 #include "Game.h"
 #include "ResourceManager.h"
+#include "BotManager.h"
 #include "GlobalSetting.h"
 #include <ctime>
 #include <cstdlib>
@@ -18,7 +19,7 @@ void loadAllResources()
 
 
     // --- 1. FONTS ---
-    // (cần tải file .ttf về và đặt vào thư mục assets/fonts/)
+    // (cần tải file .ttf về và đặt vào thư mục resources/fonts/)
 
     rm.loadFont("main_font", "resources/fonts/Montserrat-Light.ttf");
     rm.loadFont("title_font", "resources/fonts/Cinzel-regular.ttf");
@@ -53,21 +54,62 @@ void loadAllResources()
 
     // --- GAMEPLAY RESOURCES ---
     rm.loadTexture("gameplay_background", "resources/images/GamePlayBackground_01.png");   // Nền màn hình chơi
-    rm.loadTexture("gameplay_board_9x9",  "resources/images/Board_9x9_740x740_bevel.png");   // Ảnh bàn cờ
-    rm.loadTexture("gameplay_board_13x13",  "resources/images/board_13x13_740x740_bevel.png");   // Ảnh bàn cờ
-    rm.loadTexture("gameplay_board_19x19",  "resources/images/board_19x19_740x740_bevel.png");   // Ảnh bàn cờ
-    rm.loadTexture("gameplay_stone_black_9x9","resources/images/blackStone_50x50.png");   // Quân cờ Đen
-    rm.loadTexture("gameplay_stone_white_9x9","resources/images/whiteStone_50x50.png");   // Quân cờ Trắng
-    rm.loadTexture("gameplay_stone_black_13x13","resources/images/blackStone_38x38.png");   // Quân cờ Đen
-    rm.loadTexture("gameplay_stone_white_13x13","resources/images/whiteStone_38x38.png");   // Quân cờ Trắng
-    rm.loadTexture("gameplay_stone_black_19x19","resources/images/blackStone_30x30.png");   // Quân cờ Đen
-    rm.loadTexture("gameplay_stone_white_19x19","resources/images/whiteStone_30x30.png");   // Quân cờ Trắng
 
-    rm.loadTexture("gameplay_pause_btn",  "resources/images/PauseBtn_55x55.png");
+    // --- board theme 0: basic
+    rm.loadTexture("gameplay_board_9x9_basic",  "resources/images/Board_9x9_740x740_bevel.png");   // Ảnh bàn cờ
+    rm.loadTexture("gameplay_board_13x13_basic",  "resources/images/board_13x13_740x740_bevel.png");   // Ảnh bàn cờ
+    rm.loadTexture("gameplay_board_19x19_basic",  "resources/images/board_19x19_740x740_bevel.png");   // Ảnh bàn cờ
+
+    // --- board theme 1: dark (gray)
+    rm.loadTexture("gameplay_board_9x9_dark",  "resources/images/board_9x9_theme1.png");   // Ảnh bàn cờ
+    rm.loadTexture("gameplay_board_13x13_dark",  "resources/images/board_13x13_theme1.png");   // Ảnh bàn cờ
+    rm.loadTexture("gameplay_board_19x19_dark",  "resources/images/board_19x19_theme1.png");   // Ảnh bàn cờ
+
+    // --- board theme 2: light (blue pastel)
+    rm.loadTexture("gameplay_board_9x9_light",  "resources/images/board_9x9_theme2.png");   // Ảnh bàn cờ
+    rm.loadTexture("gameplay_board_13x13_light",  "resources/images/board_13x13_theme2.png");   // Ảnh bàn cờ
+    rm.loadTexture("gameplay_board_19x19_light",  "resources/images/board_19x19_theme2.png");   // Ảnh bàn cờ
+
+
+
+
+    // --- stone theme 0: basic
+    rm.loadTexture("gameplay_stone_black_9x9_basic","resources/images/blackStone_50x50.png");   // Quân cờ Đen
+    rm.loadTexture("gameplay_stone_white_9x9_basic","resources/images/whiteStone_50x50.png");   // Quân cờ Trắng
+    rm.loadTexture("gameplay_stone_black_13x13_basic","resources/images/blackStone_38x38.png");   // Quân cờ Đen
+    rm.loadTexture("gameplay_stone_white_13x13_basic","resources/images/whiteStone_38x38.png");   // Quân cờ Trắng
+    rm.loadTexture("gameplay_stone_black_19x19_basic","resources/images/blackStone_30x30.png");   // Quân cờ Đen
+    rm.loadTexture("gameplay_stone_white_19x19_basic","resources/images/whiteStone_30x30.png");   // Quân cờ Trắng
+
+    // --- stone theme 1: cartoon
+    rm.loadTexture("gameplay_stone_black_9x9_cartoon","resources/images/Stone_quagmire_50x50.png");   // Quân cờ Đen
+    rm.loadTexture("gameplay_stone_white_9x9_cartoon","resources/images/Stone_Peter_50x50.png");   // Quân cờ Trắng
+    rm.loadTexture("gameplay_stone_black_13x13_cartoon","resources/images/Stone_quagmire_38x38.png");   // Quân cờ Đen
+    rm.loadTexture("gameplay_stone_white_13x13_cartoon","resources/images/Stone_Peter_38x38.png");   // Quân cờ Trắng
+    rm.loadTexture("gameplay_stone_black_19x19_cartoon","resources/images/Stone_quagmire_30x30.png");   // Quân cờ Đen
+    rm.loadTexture("gameplay_stone_white_19x19_cartoon","resources/images/Stone_Peter_30x30.png");   // Quân cờ Trắng
+
+
+    // --- stone theme 2: realistic
+    rm.loadTexture("gameplay_stone_black_9x9_realistic","resources/images/blackstone_theme3_50x50.png");   // Quân cờ Đen
+    rm.loadTexture("gameplay_stone_white_9x9_realistic","resources/images/whitestone_theme3_50x50.png");   // Quân cờ Trắng
+    rm.loadTexture("gameplay_stone_black_13x13_realistic","resources/images/blackstone_theme3_38x38.png");   // Quân cờ Đen
+    rm.loadTexture("gameplay_stone_white_13x13_realistic","resources/images/whitestone_theme3_38x38.png");   // Quân cờ Trắng
+    rm.loadTexture("gameplay_stone_black_19x19_realistic","resources/images/blackstone_theme3_30x30.png");   // Quân cờ Đen
+    rm.loadTexture("gameplay_stone_white_19x19_realistic","resources/images/whitestone_theme3_30x30.png");   // Quân cờ Trắng
+
+
+
+
+    rm.loadTexture("gameplay_pause_btn",  "resources/images/PauseBtn_45x45.png");
     rm.loadTexture("gameplay_pass_btn",   "resources/images/PassBtn_80x55.png");
     rm.loadTexture("gameplay_undo_btn",   "resources/images/UndoBtn_80x55.png");
     rm.loadTexture("gameplay_redo_btn",   "resources/images/RedoBtn_80x55.png");
+    rm.loadTexture("gameplay_resign_btn",   "resources/images/resignBtn_45x45.png");
+    rm.loadTexture("gameplay_hint_btn",   "resources/images/hintBtn_45x45.png");
     rm.loadTexture("gameplay_turnaction_background", "resources/images/TurnAction_BackGround_360x96.png");   // Background cho nút Pass, Undo, Redo
+    rm.loadTexture("gameplay_log_background", "resources/images/gameplay_log_560x45.png");   // Background cho nút Pass, Undo, Redo
+    rm.loadTexture("loading_icon", "resources/images/loadIcon_45x45.png");
 
     rm.loadTexture("gameplay_historylist_background",      "resources/images/HistoryList_background.png");    // Nền History List
     rm.loadTexture("gameplay_historylist_track",  "resources/images/historyboard_slidertrack.png");    // Thanh trượt của HistoryList
@@ -76,7 +118,7 @@ void loadAllResources()
     rm.loadTexture("gameplay_timeline_background", "resources/images/timeline_background_1210x18.png");  // Nền Timeline
     rm.loadTexture("gameplay_timeline_tooltip_bg","resources/images/TimeLine_tooltip_90x45_gray.png"); // Nền Tooltip
 
-    rm.loadTexture("gameplay_timer_bg", "resources/images/timer_board_bg_190x100.png");
+    rm.loadTexture("gameplay_timer_bg", "resources/images/timer_board_bg_250x145.png");
 
 
 
@@ -124,6 +166,16 @@ void loadAllResources()
 
 
 
+    // --- SCORING OVERLAY RESOURCES ---
+    rm.loadTexture("territory_line", "resources/images/white_gradient_40x40.png");
+    rm.loadTexture("stamp_black_wins", "resources/images/stamp_blackwin_140x142.png");
+    rm.loadTexture("stamp_white_wins", "resources/images/stamp_whitewin_140x142.png");
+    rm.loadTexture("scoreboard", "resources/images/scoreboard_320x350.png");
+    rm.loadTexture("game_result_board", "resources/images/simple_endgame_background_320x105.png");
+
+
+
+
     // --- SETTING RESOURCES ---
     rm.loadTexture("setting_background", "resources/images/settingBackground.png");
     rm.loadTexture("setting_apply_btn", "resources/images/setting_applyBtn_58x40.png");
@@ -144,6 +196,7 @@ void loadAllResources()
     rm.loadTexture("sizeselection_apply_btn", "resources/images/sizeselection_startBtn_120x120.png");
     rm.loadTexture("sizeselection_back_btn", "resources/images/GoBackBtn_55x55_curve.png");
     rm.loadTexture("sizeselection_text_background", "resources/images/sizeselection_text_background.png");
+//    rm.loadTexture("drum_drop", )
 
 
 
@@ -163,15 +216,46 @@ void loadAllResources()
 
     // --- 5. SOUNDS (Âm thanh) ---
     // (Dùng file .wav cho hiệu ứng ngắn)
-    rm.loadSoundBuffer("place_stone_01",   "resources/sounds/place_stone_01.wav");
-    rm.loadSoundBuffer("capture_stone", "resources/sounds/capture_sound.wav");
-    rm.loadSoundBuffer("pass_move",     "resources/sounds/pass_sound.wav");
-    rm.loadSoundBuffer("error_move",    "resources/sounds/error_move_sound.wav");
+
+    // Các sfx cho theme quân cờ cơ bản
+    // --- THEME 0: BASIC (Cơ bản) ---
+    // Dù file âm thanh giống nhau, ta vẫn đặt key riêng để Logic code thống nhất
+    rm.loadSoundBuffer("place_black_basic",       "resources/sounds/place_stone_01.wav");
+    rm.loadSoundBuffer("place_white_basic",       "resources/sounds/place_stone_01.wav");
+    rm.loadSoundBuffer("pass_black_basic",         "resources/sounds/pass_sound.wav");
+    rm.loadSoundBuffer("pass_white_basic",         "resources/sounds/pass_sound.wav");
+
+    // Capture (Ăn quân)
+    rm.loadSoundBuffer("capture_black_basic",     "resources/sounds/capture_sound.wav");
+    rm.loadSoundBuffer("capture_white_basic",     "resources/sounds/capture_sound.wav");
+
+    // Error (Nước đi lỗi)
+    rm.loadSoundBuffer("error_black_basic",       "resources/sounds/error_move_sound.wav");
+    rm.loadSoundBuffer("error_white_basic",       "resources/sounds/error_move_sound.wav");
+
+
+    // --- THEME 1: CARTOON (Hoạt hình) ---
+    rm.loadSoundBuffer("place_black_cartoon",     "resources/sounds/place_stone_01.wav"); // Hoặc dùng chung basic
+    rm.loadSoundBuffer("place_white_cartoon",     "resources/sounds/place_stone_01.wav"); // Hoặc dùng chung basic
+    rm.loadSoundBuffer("pass_black_cartoon",       "resources/sounds/pass_sound.wav");
+    rm.loadSoundBuffer("pass_white_cartoon",       "resources/sounds/pass_sound.wav");
+
+    // Capture - Riêng biệt
+    rm.loadSoundBuffer("capture_black_cartoon",   "resources/sounds/capture_sound_quagmire.wav"); // Quagmire: "All Right"
+    rm.loadSoundBuffer("capture_white_cartoon",   "resources/sounds/capture_sound_peter.wav"); // Peter: "Roadhouse"
+
+    // Error - Riêng biệt
+    rm.loadSoundBuffer("error_black_cartoon",     "resources/sounds/error_move_quagmire.wav");
+    rm.loadSoundBuffer("error_white_cartoon",     "resources/sounds/error_move_peter.wav");
 
 
 
+    // Âm thanh khi tính điểm
+    rm.loadSoundBuffer("count_tick", "resources/sounds/Digital counting.wav");
+    rm.loadSoundBuffer("stamp_impact", "resources/sounds/stamp seal.wav");
 
 
+    rm.loadSoundBuffer("drum_drop", "resources/sounds/drum drop.wav");
 
 
 
@@ -203,6 +287,8 @@ int main()
     rm.setMusicVolume(gs.musicVolume);
 
     rm.playMusic(gs.musicThemeIndex);
+
+    BotManager::getInstance().startBackgroundPachi(19);
 
     loadAllResources();
 

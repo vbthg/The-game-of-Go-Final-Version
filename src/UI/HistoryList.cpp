@@ -5,12 +5,13 @@
 namespace UI
 {
 
+const float INDEX_OFFSET_X = 20.f;
 const float ITEM_HEIGHT = 50.f;
 const float SCROLLBAR_WIDTH = 13.f;
 const float PADDING_X = 30.f;
 const float PADDING_Y = 35.f;
-const float ICON_OFFSET_X = 60.f;
-const float TEXT_OFFSET_X = 140.f;
+const float ICON_OFFSET_X = 95.f;
+const float TEXT_OFFSET_X = 130.f;
 
 HistoryList::HistoryList(sf::Vector2f position, sf::Vector2f size,
                          const sf::Texture& bgTex,
@@ -22,8 +23,8 @@ HistoryList::HistoryList(sf::Vector2f position, sf::Vector2f size,
     m_size(size),
     m_totalContentHeight(0.f),
     m_isScrollbarVisible(false),
-    m_blackStoneTex(blackIconTex),
-    m_whiteStoneTex(whiteIconTex),
+    m_blackStoneTex(&blackIconTex),
+    m_whiteStoneTex(&whiteIconTex),
     m_font(font)
 {
     m_background.setTexture(bgTex);
@@ -38,8 +39,7 @@ HistoryList::HistoryList(sf::Vector2f position, sf::Vector2f size,
     float sliderHeight = std::round(m_size.y - (PADDING_Y * 1.5f));
     float sliderY = std::round(topY + PADDING_Y / 1.2f);
 
-    m_scrollbar = std::make_unique<UI::Slider>
-    (
+    m_scrollbar = std::make_unique<UI::Slider>(
         UI::Orientation::Vertical,
         sliderTrack,
         sliderX,
@@ -49,9 +49,9 @@ HistoryList::HistoryList(sf::Vector2f position, sf::Vector2f size,
 
     m_scrollbar->setOnValueChange([this](float percent)
     {
-        this -> onScroll(percent);
+        this->onScroll(percent);
     });
-    m_scrollbar -> setValue(1.0f);
+    m_scrollbar->setValue(1.0f);
 
     float viewW = m_size.x - SCROLLBAR_WIDTH - (PADDING_X * 2.5f);
     float viewH = m_size.y - (PADDING_Y * 2.f);
@@ -62,17 +62,17 @@ HistoryList::HistoryList(sf::Vector2f position, sf::Vector2f size,
 
 void HistoryList::handleEvent(sf::Event& event, const sf::RenderWindow& window)
 {
-    if (m_scrollbar)
+    if(m_scrollbar)
     {
-        m_scrollbar -> handleEvent(event, window);
+        m_scrollbar->handleEvent(event, window);
     }
 }
 
 void HistoryList::update(const sf::RenderWindow& window)
 {
-    if (m_scrollbar)
+    if(m_scrollbar)
     {
-        m_scrollbar -> update(window);
+        m_scrollbar->update(window);
     }
 }
 
@@ -80,7 +80,7 @@ void HistoryList::draw(sf::RenderTarget& target) const
 {
     target.draw(m_background);
 
-    if (m_scrollbar)
+    if(m_scrollbar)
     {
         m_scrollbar->draw(target);
     }
@@ -98,8 +98,7 @@ void HistoryList::draw(sf::RenderTarget& target) const
 
     sf::Vector2f windowSize(target.getSize());
 
-    sf::FloatRect viewport
-    (
+    sf::FloatRect viewport(
         viewX / windowSize.x,
         viewY / windowSize.y,
         viewW / windowSize.x,
@@ -110,8 +109,9 @@ void HistoryList::draw(sf::RenderTarget& target) const
     scrollingView.setViewport(viewport);
     target.setView(scrollingView);
 
-    for (const auto& entry : m_entries)
+    for(const auto& entry : m_entries)
     {
+        target.draw(entry.indexText);
         target.draw(entry.stoneIcon);
         target.draw(entry.moveText);
     }
@@ -122,15 +122,22 @@ void HistoryList::draw(sf::RenderTarget& target) const
 void HistoryList::addMove(bool isBlack, const std::string& moveCoords)
 {
     bool shouldAutoScroll = true;
-    if (m_scrollbar && m_scrollbar -> getValue() < 0.95f && m_totalContentHeight > m_view.getSize().y)
+    if(m_scrollbar && m_scrollbar->getValue() < 0.95f && m_totalContentHeight > m_view.getSize().y)
     {
         shouldAutoScroll = false;
     }
 
     HistoryEntry newEntry;
-    newEntry.stoneIcon.setTexture(isBlack ? m_blackStoneTex : m_whiteStoneTex);
 
-    float iconScale = (ITEM_HEIGHT - 8.f) / newEntry.stoneIcon.getLocalBounds().height;
+    newEntry.isBlack = isBlack;
+
+    int moveNumber = m_entries.size() + 1;
+    newEntry.indexText.setFont(m_font);
+    newEntry.indexText.setString(std::to_string(moveNumber) + ".");
+    newEntry.indexText.setCharacterSize(16);
+    newEntry.indexText.setFillColor(sf::Color(70, 70, 70));
+
+    newEntry.stoneIcon.setTexture(isBlack ? *m_blackStoneTex : *m_whiteStoneTex);
 
     newEntry.moveText.setFont(m_font);
     newEntry.moveText.setString(moveCoords);
@@ -139,12 +146,16 @@ void HistoryList::addMove(bool isBlack, const std::string& moveCoords)
 
     float newY = m_entries.size() * ITEM_HEIGHT + (ITEM_HEIGHT / 2.f);
 
-    newEntry.stoneIcon.setOrigin(newEntry.stoneIcon.getLocalBounds().width / 2.f, newEntry.stoneIcon.getLocalBounds().height / 2.f);
+    sf::FloatRect idxBounds = newEntry.indexText.getLocalBounds();
+    newEntry.indexText.setOrigin(0.f, idxBounds.height / 2.f);
+    newEntry.indexText.setPosition(INDEX_OFFSET_X, newY - 4.f);
+
+    sf::FloatRect iconBounds = newEntry.stoneIcon.getLocalBounds();
+    newEntry.stoneIcon.setOrigin(iconBounds.width / 2.f, iconBounds.height / 2.f);
     newEntry.stoneIcon.setPosition(ICON_OFFSET_X, newY);
 
     sf::FloatRect textBounds = newEntry.moveText.getLocalBounds();
-    newEntry.moveText.setOrigin(0, textBounds.height / 2.f);
-
+    newEntry.moveText.setOrigin(0.f, textBounds.height / 2.f);
     newEntry.moveText.setPosition(TEXT_OFFSET_X, newY - 4.f);
 
     m_entries.push_back(newEntry);
@@ -152,22 +163,38 @@ void HistoryList::addMove(bool isBlack, const std::string& moveCoords)
 
     updateScrollbarState();
 
-    if (shouldAutoScroll && m_scrollbar)
+    if(shouldAutoScroll && m_scrollbar)
     {
-        m_scrollbar -> setValue(1.0f);
+        m_scrollbar->setValue(1.0f);
         onScroll(1.0f);
     }
 }
 
+void HistoryList::updateTheme(const sf::Texture* blackTex, const sf::Texture* whiteTex)
+{
+    m_blackStoneTex = blackTex;
+    m_whiteStoneTex = whiteTex;
+
+    for(auto& entry : m_entries)
+    {
+        if(entry.isBlack)
+            entry.stoneIcon.setTexture(*m_blackStoneTex);
+        else
+            entry.stoneIcon.setTexture(*m_whiteStoneTex);
+
+        sf::FloatRect iconBounds = entry.stoneIcon.getLocalBounds();
+        entry.stoneIcon.setOrigin(iconBounds.width / 2.f, iconBounds.height / 2.f);
+    }
+}
 
 void HistoryList::clear()
 {
     m_entries.clear();
     m_totalContentHeight = 0.f;
     updateScrollbarState();
-    if (m_scrollbar)
+    if(m_scrollbar)
     {
-        m_scrollbar -> setValue(0.f);
+        m_scrollbar->setValue(0.f);
         onScroll(0.f);
     }
 }
@@ -175,7 +202,7 @@ void HistoryList::clear()
 void HistoryList::onScroll(float percent)
 {
     float viewHeight = m_view.getSize().y;
-    if (m_totalContentHeight <= viewHeight)
+    if(m_totalContentHeight <= viewHeight)
     {
         m_view.setCenter(m_view.getSize().x / 2.f, viewHeight / 2.f);
         return;
@@ -189,7 +216,7 @@ void HistoryList::onScroll(float percent)
 void HistoryList::updateScrollbarState()
 {
     float viewHeight = m_view.getSize().y;
-    if (m_totalContentHeight > viewHeight)
+    if(m_totalContentHeight > viewHeight)
         m_isScrollbarVisible = true;
     else
         m_isScrollbarVisible = false;
@@ -197,17 +224,17 @@ void HistoryList::updateScrollbarState()
 
 void HistoryList::removeLastMove()
 {
-    if (m_entries.empty()) return;
+    if(m_entries.empty()) return;
     m_entries.pop_back();
     m_totalContentHeight -= ITEM_HEIGHT;
-    if (m_totalContentHeight < 0) m_totalContentHeight = 0;
+    if(m_totalContentHeight < 0) m_totalContentHeight = 0;
     updateScrollbarState();
-    if (m_scrollbar) onScroll(m_scrollbar->getValue());
+    if(m_scrollbar) onScroll(m_scrollbar->getValue());
 }
 
 std::string HistoryList::getLastMoveNotation() const
 {
-    if (m_entries.empty()) return "";
+    if(m_entries.empty()) return "";
     return m_entries.back().moveText.getString().toAnsiString();
 }
 

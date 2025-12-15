@@ -24,22 +24,18 @@ private:
     sf::RenderWindow& m_window;
     GameStateType m_requestedState;
 
-
-    sf::Sprite m_background; // Ảnh nền mờ
-    sf::RectangleShape m_panel; // Cái cửa sổ nhỏ ở giữa
-
+    sf::Sprite m_background;
+    sf::RectangleShape m_panel;
 
     sf::Text m_titleText;
-    sf::Text m_contentText; // Nội dung dài
-
+    sf::Text m_contentText;
 
     std::unique_ptr<UI::Slider> m_scrollbar;
-    sf::View m_scrollView;  // Camera ảo để cắt chữ
+    sf::View m_scrollView;
 
     float m_scrollOffset;
     float m_maxScroll;
-    float m_viewHeight;     // Chiều cao vùng nhìn thấy được
-
+    float m_viewHeight;
 
     UI::Button m_backBtn;
 };

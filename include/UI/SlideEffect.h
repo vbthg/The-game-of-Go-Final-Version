@@ -5,11 +5,9 @@
 
 namespace UI
 {
-
 class SlideEffect: public IEffect
 {
 public:
-
     SlideEffect(sf::Sprite& target,
                 sf::Vector2f startPos,
                 const float& slideDuration);
@@ -19,10 +17,10 @@ public:
     bool isFinished() const override;
 
 private:
-    sf::Sprite& m_target; // Sprite để di chuyển
+    sf::Sprite& m_target;
 
     sf::Vector2f m_startPos;
-    sf::Vector2f m_endPos; // Vị trí kết thúc (được lấy từ vị trí ban đầu của sprite)
+    sf::Vector2f m_endPos;
 
     float m_slideDuration;
     float m_elapsedTime;

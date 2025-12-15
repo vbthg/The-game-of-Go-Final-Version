@@ -2,17 +2,18 @@
 #include <map>
 #include <string>
 #include <memory>
+#include <list>
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <SFML/Window/Cursor.hpp>
 
-class ResourceManager {
+class ResourceManager
+{
 public:
     static ResourceManager& getInstance();
 
     ResourceManager(ResourceManager const&) = delete;
     void operator=(ResourceManager const&) = delete;
-
 
     void loadTexture(const std::string& key, const std::string& filePath);
 
@@ -33,8 +34,14 @@ public:
     void setMusicVolume(float volume);
     void stopMusic();
 
-private:
 
+    void playAmbient(const std::string &filePath);
+    void stopAmbient();
+    void setAmbientVolume(float volume);
+
+    void playSound(const std::string& key, float volume = 100.f);
+
+private:
     ResourceManager();
 
     std::map<std::string, sf::Texture> m_textures;
@@ -44,5 +51,9 @@ private:
 
     sf::Music m_backgroundMusic;
     int m_currentMusicTheme = -1;
+
+    sf::Music m_ambientMusic;
+
+    std::list<sf::Sound> m_activeSounds;
 };
 

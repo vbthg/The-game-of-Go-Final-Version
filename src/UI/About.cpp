@@ -5,13 +5,13 @@ const float PANEL_WIDTH = 600.f;
 const float PANEL_HEIGHT = 500.f;
 const float SCROLLBAR_WIDTH = 20.f;
 
-About::About(sf::RenderWindow& window) :
-    m_window(window),
-    m_requestedState(GameStateType::NoChange),
-    m_scrollOffset(0.f),
-    m_maxScroll(0.f),
-    m_viewHeight(0.f),
-    m_backBtn(ResourceManager::getInstance().getTexture("about_back_btn"), {62.f, 57.f}, true)
+About::About(sf::RenderWindow& window)
+    : m_window(window)
+    , m_requestedState(GameStateType::NoChange)
+    , m_scrollOffset(0.f)
+    , m_maxScroll(0.f)
+    , m_viewHeight(0.f)
+    , m_backBtn(ResourceManager::getInstance().getTexture("about_back_btn"), {62.f, 57.f}, true)
 {
     createUI();
 }
@@ -31,16 +31,13 @@ void About::createUI()
 
     sf::Font& font = ResourceManager::getInstance().getFont("main_font");
 
-
     m_titleText.setFont(font);
     m_titleText.setString("ABOUT PROJECT");
     m_titleText.setCharacterSize(32);
     m_titleText.setFillColor(sf::Color::White);
-
     sf::FloatRect titleBounds = m_titleText.getLocalBounds();
     m_titleText.setOrigin(titleBounds.width / 2, 0);
     m_titleText.setPosition(windowSize.x / 2.f, (windowSize.y / 2.f) - (PANEL_HEIGHT / 2) + 20.f);
-
 
     m_contentText.setFont(font);
     m_contentText.setCharacterSize(20);
@@ -73,7 +70,6 @@ void About::createUI()
     m_scrollView.setCenter(contentWidth / 2.f, m_viewHeight / 2.f);
 
     float viewportX = (windowSize.x - contentWidth) / 2.f / windowSize.x;
-
     float panelTopY = (windowSize.y - PANEL_HEIGHT) / 2.f;
     float viewportY = (panelTopY + headerHeight) / windowSize.y;
     float viewportW = contentWidth / windowSize.x;
@@ -82,7 +78,7 @@ void About::createUI()
     m_scrollView.setViewport(sf::FloatRect(viewportX, viewportY, viewportW, viewportH));
 
     float totalTextHeight = m_contentText.getGlobalBounds().height;
-    if (totalTextHeight > m_viewHeight)
+    if(totalTextHeight > m_viewHeight)
     {
         m_maxScroll = totalTextHeight - m_viewHeight;
     }
@@ -96,17 +92,16 @@ void About::createUI()
 
     sf::Texture& sliderTrackTex = ResourceManager::getInstance().getTexture("about_slider_track");
 
-    m_scrollbar = std::make_unique<UI::Slider>
-    (
+    m_scrollbar = std::make_unique<UI::Slider>(
         UI::Orientation::Vertical,
         sliderTrackTex,
         510.f, 450.f,
         m_viewHeight
     );
 
-    m_scrollbar -> setOnValueChange([this](float percent)
+    m_scrollbar->setOnValueChange([this](float percent)
     {
-        this -> updateScroll(percent);
+        this->updateScroll(percent);
     });
 
     sf::FloatRect btnSize = m_backBtn.getSprite().getLocalBounds();
@@ -117,18 +112,19 @@ void About::createUI()
 
     m_backBtn.setOnClick([this]()
     {
-        this -> onBackClick();
+        this->onBackClick();
     });
 }
 
 void About::onBackClick()
 {
+    std::cout << "back button clicked!\n";
     m_requestedState = GameStateType::MainMenu;
 }
 
 void About::updateScroll(float percent)
 {
-    if (m_maxScroll <= 0) return;
+    if(m_maxScroll <= 0) return;
 
     float currentScrollY = m_maxScroll * percent;
 
@@ -143,9 +139,9 @@ void About::handleEvent(sf::Event& event)
 {
     m_backBtn.handleEvent(event, m_window);
 
-    if (m_scrollbar)
+    if(m_scrollbar)
     {
-        m_scrollbar -> handleEvent(event, m_window);
+        m_scrollbar->handleEvent(event, m_window);
     }
 }
 
@@ -153,9 +149,9 @@ GameStateType About::update(float deltaTime)
 {
     m_backBtn.update(m_window);
 
-    if (m_scrollbar)
+    if(m_scrollbar)
     {
-        m_scrollbar -> update(m_window);
+        m_scrollbar->update(m_window);
     }
 
     return m_requestedState;
@@ -176,9 +172,9 @@ void About::draw()
 
     m_window.setView(defaultView);
 
-    if (m_scrollbar)
+    if(m_scrollbar)
     {
-        m_scrollbar -> draw(m_window);
+        m_scrollbar->draw(m_window);
     }
     m_backBtn.draw(m_window);
 }

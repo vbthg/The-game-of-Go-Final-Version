@@ -1,3 +1,4 @@
+// include/Setting.h
 #pragma once
 
 #include <SFML/Graphics.hpp>
@@ -15,7 +16,6 @@
 class Setting : public GameState
 {
 public:
-
     Setting(sf::RenderWindow& window, GameStateType backState = GameStateType::GoBack);
     virtual ~Setting() = default;
 
@@ -65,6 +65,5 @@ private:
     std::unique_ptr<UI::Stepper> m_timeLimit;
     std::unique_ptr<UI::Stepper> m_komiPoints;
 
-    // Hiệu ứng nút bấm
     std::vector<std::unique_ptr<IEffect>> m_persistentEffects;
 };

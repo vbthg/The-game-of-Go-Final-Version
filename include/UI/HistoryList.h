@@ -1,3 +1,4 @@
+// include/HistoryList.h
 #pragma once
 
 #include <SFML/Graphics.hpp>
@@ -14,8 +15,11 @@ class HistoryList
 private:
     struct HistoryEntry
     {
+        bool isBlack;
         sf::Sprite stoneIcon;
         sf::Text moveText;
+
+        sf::Text indexText;
     };
 
 public:
@@ -35,6 +39,7 @@ public:
     void removeLastMove(); // Xóa dòng cuối
     void clear();
 
+    void updateTheme(const sf::Texture* blackTex, const sf::Texture* whiteTex);
 
     std::string getLastMoveNotation() const;
 
@@ -52,8 +57,8 @@ private:
     float m_totalContentHeight;
     bool m_isScrollbarVisible;
 
-    const sf::Texture& m_blackStoneTex;
-    const sf::Texture& m_whiteStoneTex;
+    const sf::Texture* m_blackStoneTex;
+    const sf::Texture* m_whiteStoneTex;
     const sf::Font& m_font;
 };
 

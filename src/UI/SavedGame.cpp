@@ -10,10 +10,9 @@ std::vector<std::string> splitStr(const std::string& s, char delimiter)
     std::vector<std::string> tokens;
     std::string token;
     std::istringstream tokenStream(s);
-    while (std::getline(tokenStream, token, delimiter)) tokens.push_back(token);
+    while(std::getline(tokenStream, token, delimiter)) tokens.push_back(token);
     return tokens;
 }
-
 
 SavedGame::SavedGame(sf::RenderWindow& window) :
     m_window(window),
@@ -29,17 +28,19 @@ SavedGame::SavedGame(sf::RenderWindow& window) :
     m_popupNoBtn(ResourceManager::getInstance().getTexture("savedgame_popupno_btn"), {900.f, 500.f}, true)
 {
     m_backBtn.setOnClick([this]()
-                         {
-                             onBackClick();
-                         });
+    {
+        onBackClick();
+    });
 
-    m_scrollbar = std::make_unique<UI::Slider>
-    (
+    m_scrollbar = std::make_unique<UI::Slider>(
         UI::Orientation::Vertical,
         ResourceManager::getInstance().getTexture("savedgame_slidertrack_btn"),
         1580.f, 450.f, 800.f
     );
-    m_scrollbar -> setOnValueChange([this](float p){ updateScroll(p); });
+    m_scrollbar->setOnValueChange([this](float p)
+    {
+        updateScroll(p);
+    });
 
     m_popupOverlay.setSize((sf::Vector2f)m_window.getSize());
     m_popupOverlay.setFillColor(sf::Color(0, 0, 0, 200));
@@ -60,15 +61,18 @@ SavedGame::SavedGame(sf::RenderWindow& window) :
 
     m_popupYesBtn.setOnClick([this]()
     {
-        if (m_targetDeleteIndex >= 0 && m_targetDeleteIndex < m_slots.size())
+        if(m_targetDeleteIndex >= 0 && m_targetDeleteIndex < m_slots.size())
         {
-            std::filesystem::remove(m_slots[m_targetDeleteIndex] -> info.filename);
-            std::filesystem::remove(m_slots[m_targetDeleteIndex] -> info.screenshotPath);
+            std::filesystem::remove(m_slots[m_targetDeleteIndex]->info.filename);
+            std::filesystem::remove(m_slots[m_targetDeleteIndex]->info.screenshotPath);
             loadSaveFiles();
         }
         m_showPopup = false;
     });
-    m_popupNoBtn.setOnClick([this](){ m_showPopup = false; });
+    m_popupNoBtn.setOnClick([this]()
+    {
+        m_showPopup = false;
+    });
 
     loadSaveFiles();
 }
@@ -77,22 +81,21 @@ void SavedGame::loadSaveFiles()
 {
     m_slots.clear();
     namespace fs = std::filesystem;
-    if (!fs::exists("assets/saves")) fs::create_directories("assets/saves");
+    if(!fs::exists("assets/saves")) fs::create_directories("assets/saves");
 
     float y = 120.f;
     int idx = 0;
 
-    for (const auto& entry : fs::directory_iterator("assets/saves"))
+    for(const auto& entry : fs::directory_iterator("assets/saves"))
     {
-        if (entry.path().extension() == ".txt")
+        if(entry.path().extension() == ".txt")
         {
             std::ifstream file(entry.path());
             std::string line;
-
-            if (std::getline(file, line))
+            if(std::getline(file, line))
             {
                 auto parts = splitStr(line, '|');
-                if (parts.size() >= 5)
+                if(parts.size() >= 5)
                 {
                     SaveInfo info;
                     info.filename = entry.path().string();
@@ -107,6 +110,22 @@ void SavedGame::loadSaveFiles()
                     info.modeStr = parts[3];
                     info.status = parts[4];
 
+                    if(parts.size() >= 6)
+                    {
+                        try
+                        {
+                            info.difficulty = std::stoi(parts[5]);
+                        }
+                        catch(...)
+                        {
+                            info.difficulty = 1;
+                        }
+                    }
+                    else
+                    {
+                        info.difficulty = 1;
+                    }
+
                     createSlotUI(idx, info, y + idx * m_slotHeight);
                     idx++;
                 }
@@ -117,68 +136,89 @@ void SavedGame::loadSaveFiles()
     float totalHeight = idx * m_slotHeight;
     float viewHeight = 800.f;
     m_maxScroll = (totalHeight > viewHeight) ? (totalHeight - viewHeight) : 0.f;
-    if (m_scrollbar) m_scrollbar -> setValue(0.f);
+    if(m_scrollbar) m_scrollbar->setValue(0.f);
     m_scrollOffset = 0.f;
 }
 
 void SavedGame::createSlotUI(int index, const SaveInfo& info, float yPos)
 {
     auto slot = std::make_unique<SaveSlotUI>();
-    slot -> info = info;
+    slot->info = info;
 
-    slot -> panel.setSize({1000.f, 160.f});
-    slot -> panel.setFillColor(sf::Color(30, 30, 30, 220));
-    slot -> panel.setOutlineColor(sf::Color::White);
-    slot -> panel.setOutlineThickness(1.f);
-    slot -> panel.setPosition(300.f, yPos);
+    slot->panel.setSize({1000.f, 160.f});
+    slot->panel.setFillColor(sf::Color(30, 30, 30, 220));
+    slot->panel.setOutlineColor(sf::Color::White);
+    slot->panel.setOutlineThickness(1.f);
+    slot->panel.setPosition(300.f, yPos);
 
-    if (slot -> textureHolder.loadFromFile(info.screenshotPath))
+    if(slot->textureHolder.loadFromFile(info.screenshotPath))
     {
-        slot -> textureHolder.setSmooth(true);
-        slot -> thumbnail.setTexture(slot->textureHolder);
+        slot->textureHolder.setSmooth(true);
+        slot->thumbnail.setTexture(slot->textureHolder);
         sf::Vector2u size = slot->textureHolder.getSize();
         float sX = 140.f / size.x;
         float sY = 140.f / size.y;
-        slot -> thumbnail.setScale(sX, sY);
-        slot -> thumbnail.setPosition(310.f, std::round(yPos + 10.f));
+        slot->thumbnail.setScale(sX, sY);
+        slot->thumbnail.setPosition(310.f, std::round(yPos + 10.f));
     }
 
     const auto& font = ResourceManager::getInstance().getFont("main_font");
 
-    slot -> textTitle.setFont(font);
-    slot -> textTitle.setString(info.userTitle);
-    slot -> textTitle.setCharacterSize(24);
-    slot -> textTitle.setFillColor(sf::Color::White);
-    slot -> textTitle.setPosition(470.f, std::round(yPos + 15.f));
+    slot->textTitle.setFont(font);
+    slot->textTitle.setString(info.userTitle);
+    slot->textTitle.setCharacterSize(24);
+    slot->textTitle.setFillColor(sf::Color::White);
+    slot->textTitle.setPosition(470.f, std::round(yPos + 15.f));
 
-    slot -> textDetail.setFont(font);
+    slot->textDetail.setFont(font);
+
+    std::string modeDisplay = info.modeStr;
+
+    if(info.modeStr == "PvAI")
+    {
+        std::string rank;
+        switch(info.difficulty)
+        {
+            case 0: rank = "Novice"; break;
+            case 1: rank = "Adept";  break;
+            case 2: rank = "Master"; break;
+            default: rank = "Novice"; break;
+        }
+        modeDisplay = "PvAI (" + rank + ")";
+    }
+
     std::string details = info.timestamp + "  |  " +
                           std::to_string(info.boardSize) + "x" + std::to_string(info.boardSize) + "  |  " +
-                          info.modeStr;
-    slot -> textDetail.setString(details);
-    slot -> textDetail.setCharacterSize(18);
-    slot -> textDetail.setFillColor(sf::Color(200, 200, 200));
-    slot -> textDetail.setPosition(470.f, std::round(yPos + 55.f));
+                          modeDisplay;
 
-    slot -> textStatus.setFont(font);
-    slot -> textStatus.setString("Status: " + info.status);
-    slot -> textStatus.setCharacterSize(18);
-    slot -> textStatus.setFillColor(sf::Color(255, 215, 0));
-    slot -> textStatus.setPosition(470.f, std::round(yPos + 85.f));
+    slot->textDetail.setString(details);
+    slot->textDetail.setCharacterSize(18);
+    slot->textDetail.setFillColor(sf::Color(200, 200, 200));
+    slot->textDetail.setPosition(470.f, std::round(yPos + 55.f));
 
-    slot -> btnLoad = std::make_unique<UI::Button>
-    (
+    slot->textStatus.setFont(font);
+    slot->textStatus.setString("Status: " + info.status);
+    slot->textStatus.setCharacterSize(18);
+    slot->textStatus.setFillColor(sf::Color(255, 215, 0));
+    slot->textStatus.setPosition(470.f, std::round(yPos + 85.f));
+
+    slot->btnLoad = std::make_unique<UI::Button>(
         ResourceManager::getInstance().getTexture("savedgame_load_btn"),
         sf::Vector2f{1150.f, std::round(yPos + 80.f)}, true
     );
-    slot -> btnLoad -> setOnClick([this, index](){ onLoadClick(index); });
+    slot->btnLoad->setOnClick([this, index]()
+    {
+        onLoadClick(index);
+    });
 
-    slot -> btnDelete = std::make_unique<UI::Button>
-    (
+    slot->btnDelete = std::make_unique<UI::Button>(
         ResourceManager::getInstance().getTexture("savedgame_delete_btn"),
         sf::Vector2f{1250.f, std::round(yPos + 80.f)}, true
     );
-    slot -> btnDelete -> setOnClick([this, index](){ onDeleteClick(index); });
+    slot->btnDelete->setOnClick([this, index]()
+    {
+        onDeleteClick(index);
+    });
 
     m_slots.push_back(std::move(slot));
 }
@@ -190,7 +230,7 @@ void SavedGame::updateScroll(float percent)
 
 void SavedGame::handleEvent(sf::Event& event)
 {
-    if (m_showPopup)
+    if(m_showPopup)
     {
         m_popupYesBtn.handleEvent(event, m_window);
         m_popupNoBtn.handleEvent(event, m_window);
@@ -198,30 +238,29 @@ void SavedGame::handleEvent(sf::Event& event)
     }
 
     m_backBtn.handleEvent(event, m_window);
-    m_scrollbar -> handleEvent(event, m_window);
+    m_scrollbar->handleEvent(event, m_window);
 
-    if (event.type == sf::Event::MouseWheelScrolled)
+    if(event.type == sf::Event::MouseWheelScrolled)
     {
         float currentVal = m_scrollbar->getValue();
         float delta = -event.mouseWheelScroll.delta * 0.1f;
-        m_scrollbar -> setValue(currentVal + delta);
+        m_scrollbar->setValue(currentVal + delta);
     }
 
-    for (auto& slot : m_slots)
+    for(auto& slot : m_slots)
     {
         float basePosY = slot->panel.getPosition().y;
+        slot->btnLoad->setPosition({1150.f, std::round(basePosY + 80.f - m_scrollOffset)});
+        slot->btnDelete->setPosition({1250.f, std::round(basePosY + 80.f - m_scrollOffset)});
 
-        slot -> btnLoad -> setPosition({1150.f, std::round(basePosY + 80.f - m_scrollOffset)});
-        slot -> btnDelete -> setPosition({1250.f, std::round(basePosY + 80.f - m_scrollOffset)});
-
-        slot -> btnLoad -> handleEvent(event, m_window);
-        slot -> btnDelete -> handleEvent(event, m_window);
+        slot->btnLoad->handleEvent(event, m_window);
+        slot->btnDelete->handleEvent(event, m_window);
     }
 }
 
 GameStateType SavedGame::update(float deltaTime)
 {
-    if (m_showPopup)
+    if(m_showPopup)
     {
         m_popupYesBtn.update(m_window);
         m_popupNoBtn.update(m_window);
@@ -229,9 +268,9 @@ GameStateType SavedGame::update(float deltaTime)
     }
 
     m_backBtn.update(m_window);
-    m_scrollbar -> update(m_window);
+    m_scrollbar->update(m_window);
 
-    for (auto& slot : m_slots)
+    for(auto& slot : m_slots)
     {
         slot->btnLoad->update(m_window);
         slot->btnDelete->update(m_window);
@@ -246,43 +285,43 @@ void SavedGame::draw()
 {
     m_window.draw(m_background);
 
-    for (auto& slot : m_slots)
+    for(auto& slot : m_slots)
     {
         float yDisplay = slot->panel.getPosition().y - m_scrollOffset;
 
-        if (yDisplay > -200 && yDisplay < m_window.getSize().y)
+        if(yDisplay > -200 && yDisplay < m_window.getSize().y)
         {
-            slot -> panel.setPosition(300.f, yDisplay);
-            m_window.draw(slot -> panel);
+            slot->panel.setPosition(300.f, yDisplay);
+            m_window.draw(slot->panel);
 
-            sf::Vector2f thumbPos = slot -> thumbnail.getPosition();
-            slot -> thumbnail.setPosition(310.f, std::round(yDisplay + 10.f));
-            m_window.draw(slot -> thumbnail);
-            slot -> thumbnail.setPosition(thumbPos);
+            sf::Vector2f thumbPos = slot->thumbnail.getPosition();
+            slot->thumbnail.setPosition(310.f, std::round(yDisplay + 10.f));
+            m_window.draw(slot->thumbnail);
+            slot->thumbnail.setPosition(thumbPos);
 
-            slot -> textTitle.setPosition(470.f, std::round(yDisplay + 15.f));
-            m_window.draw(slot -> textTitle);
+            slot->textTitle.setPosition(470.f, std::round(yDisplay + 15.f));
+            m_window.draw(slot->textTitle);
 
-            slot -> textDetail.setPosition(470.f, std::round(yDisplay + 55.f));
-            m_window.draw(slot -> textDetail);
+            slot->textDetail.setPosition(470.f, std::round(yDisplay + 55.f));
+            m_window.draw(slot->textDetail);
 
-            slot -> textStatus.setPosition(470.f, std::round(yDisplay + 85.f));
-            m_window.draw(slot -> textStatus);
+            slot->textStatus.setPosition(470.f, std::round(yDisplay + 85.f));
+            m_window.draw(slot->textStatus);
 
-            slot -> btnLoad -> setPosition({1150.f, std::round(yDisplay + 80.f)});
-            slot -> btnDelete -> setPosition({1250.f, std::round(yDisplay + 80.f)});
+            slot->btnLoad->setPosition({1150.f, std::round(yDisplay + 80.f)});
+            slot->btnDelete->setPosition({1250.f, std::round(yDisplay + 80.f)});
 
-            slot -> btnLoad -> draw(m_window);
-            slot -> btnDelete -> draw(m_window);
+            slot->btnLoad->draw(m_window);
+            slot->btnDelete->draw(m_window);
 
-            slot -> panel.setPosition(300.f, std::round(yDisplay + m_scrollOffset));
+            slot->panel.setPosition(300.f, std::round(yDisplay + m_scrollOffset));
         }
     }
 
-    m_scrollbar -> draw(m_window);
+    m_scrollbar->draw(m_window);
     m_backBtn.draw(m_window);
 
-    if (m_showPopup)
+    if(m_showPopup)
     {
         m_window.draw(m_popupOverlay);
         m_window.draw(m_popupBox);

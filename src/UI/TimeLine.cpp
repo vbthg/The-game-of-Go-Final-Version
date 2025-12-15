@@ -10,18 +10,16 @@ namespace UI
 const float PI = std::acos(-1.f);
 
 Timeline::Timeline(sf::Vector2f position, sf::Vector2f size,
-                   const sf::Texture& bgTex, const sf::Texture& tooltipBgTex, const sf::Font& font) :
-    m_position(position),
-    m_size(size),
-    m_font(font),
-    m_isTooltipVisible(false)
+                   const sf::Texture& bgTex, const sf::Texture& tooltipBgTex, const sf::Font& font)
+    : m_position(position)
+    , m_size(size)
+    , m_font(font)
+    , m_isTooltipVisible(false)
 {
-
     m_background.setTexture(bgTex);
     sf::FloatRect bounds = m_background.getLocalBounds();
-    m_background.setOrigin(bounds.width / 2.f, bounds.height / 2.f); // Tâm ở giữa
+    m_background.setOrigin(bounds.width / 2.f, bounds.height / 2.f);
     m_background.setPosition(m_position);
-
 
     m_tooltipBackground.setTexture(tooltipBgTex);
     m_tooltipText.setFont(m_font);
@@ -66,14 +64,14 @@ void Timeline::update(float deltaTime, const sf::RenderWindow& window)
         if(seg.state != TimelineSegment::State::STATIC)
         {
             seg.animTimer = std::min(seg.animTimer + deltaTime, seg.animDuration);
-            float rat = (seg.animDuration > 0) ? seg.animTimer / seg.animDuration : 1.f;
+            float ratio = (seg.animDuration > 0) ? seg.animTimer / seg.animDuration : 1.f;
 
-            float easedRatio = std::sin(rat * (PI / 2.f));
+            float easedRatio = std::sin(ratio * (PI / 2.f));
 
             float currentWidth = seg.startWidth + (seg.targetWidth - seg.startWidth) * easedRatio;
             seg.shape.setSize({currentWidth, m_size.y});
 
-            if(rat >= 1.f)
+            if(ratio >= 1.f)
             {
                 if(seg.state == TimelineSegment::State::SHRINKING_OUT)
                 {
@@ -95,7 +93,6 @@ void Timeline::update(float deltaTime, const sf::RenderWindow& window)
         float currentY = m_position.y - m_size.y / 2.f;
         seg.shape.setPosition(currentX, currentY);
 
-
         if(!foundHover && seg.shape.getGlobalBounds().contains(mousePos))
         {
              foundHover = true;
@@ -106,10 +103,8 @@ void Timeline::update(float deltaTime, const sf::RenderWindow& window)
                 << std::fixed << std::setprecision(1) << seg.actualTime << "s";
              m_tooltipText.setString(ss.str());
 
-
              sf::FloatRect textBounds = m_tooltipText.getLocalBounds();
              sf::Vector2u tipBgSize = m_tooltipBackground.getTexture()->getSize();
-
 
              float padding = 10.f;
              float tipWidth = textBounds.width + padding * 2;
@@ -125,7 +120,6 @@ void Timeline::update(float deltaTime, const sf::RenderWindow& window)
              sf::Vector2f bgPos = m_tooltipBackground.getPosition();
              m_tooltipText.setPosition(bgPos.x + padding, bgPos.y + padding);
         }
-
 
         currentX += seg.shape.getSize().x;
         ++it;
@@ -222,7 +216,8 @@ void Timeline::recalculateProportions()
     float totalStaticTime = 0.f;
     float totalAnimatedWidth = 0.f;
 
-    for(const auto& seg : m_segments) {
+    for(const auto& seg : m_segments)
+    {
         if(seg.state == TimelineSegment::State::STATIC)
         {
             totalStaticTime += seg.actualTime;

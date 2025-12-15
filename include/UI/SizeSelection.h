@@ -1,3 +1,4 @@
+// include/SizeSelection.h
 #pragma once
 
 #include "GameState.h"
@@ -9,8 +10,7 @@
 #include <vector>
 #include <memory>
 
-class SizeSelection : public GameState
-{
+class SizeSelection : public GameState {
 public:
     SizeSelection(sf::RenderWindow& window, GameMode mode, sf::Vector2f mousePos);
     virtual ~SizeSelection() = default;
@@ -26,10 +26,8 @@ private:
     void createUI();
     void createEffects();
 
-
     void updateButtonVisuals(float deltaTime);
     float lerp(float start, float end, float speed, float dt);
-
 
     void on9x9Click();
     void on13x13Click();
@@ -48,13 +46,11 @@ private:
     int m_selectedSize;
     AiDifficulty m_selectedDiff;
 
-
     sf::Text m_labelSize;
     UI::Button m_9x9Btn;
     UI::Button m_13x13Btn;
     UI::Button m_19x19Btn;
     sf::Sprite m_sizeTextBg;
-
 
     sf::Text m_labelDiff;
     UI::Button m_easyBtn;
@@ -62,10 +58,8 @@ private:
     UI::Button m_hardBtn;
     sf::Sprite m_diffTextBg;
 
-
     UI::Button m_playBtn;
     UI::Button m_backBtn;
-
 
     std::vector<UI::Button*> m_groupSizeBtns;
     std::vector<UI::Button*> m_groupDiffBtns;
@@ -75,6 +69,5 @@ private:
 
     sf::Vector2f m_startClickPos;
 
-    std::vector<std::unique_ptr<IEffect>> m_introEffects; // Hiệu ứng lúc mới vào
-
+    std::vector<std::unique_ptr<IEffect>> m_introEffects;
 };

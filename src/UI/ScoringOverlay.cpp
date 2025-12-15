@@ -1,342 +1,194 @@
 #include "ScoringOverlay.h"
-#include <queue>
+#include "ResourceManager.h"
+#include "GlobalSetting.h"
 #include <cmath>
 #include <sstream>
 #include <iomanip>
 #include <algorithm>
+#include <iostream>
 
-const float WAVE_SPEED_FACTOR = 0.25f;
-const float DELAY_BETWEEN_SIDES = 0.8f;
-const float DELAY_BEFORE_SCOREBOARD = 3.0f;
-const float CIRCLE_SIZE_RATIO = 0.45f;
-const float TARGET_ALPHA = 100.f;
-const float FADE_IN_DURATION = 0.6f;
-const float RANDOM_DELAY_AMPLITUDE = 0.05f;
+namespace UI
+{
+const float EDGE_GROW_DURATION = 0.20f;
+const float BORDER_OFFSET_RATIO = 0.5f;
+const float DELAY_BETWEEN_SIDES = 0.25f;
+const float BORDER_ALPHA = 180.f;
 
+const float DEAD_STONE_DURATION = 1.5f;
+const float DEAD_STONE_DELAY = 1.0f;
+const sf::Uint8 FINAL_ALPHA = 80;
+const float FINAL_SCALE = 0.75f;
+const float PI = 3.14159265359f;
 
+const int dy[] = { -1, +0, +0, +1 };
+const int dx[] = { +0, +1, -1, +0 };
 
 ScoringOverlay::ScoringOverlay(int boardSize, float cellSize, sf::Vector2f boardTopLeft, const sf::Font& font)
-    : m_boardSize(boardSize), m_cellSize(cellSize), m_boardTopLeft(boardTopLeft),
-      m_dimmerAlpha(0.f), m_timer(0.f), m_font(font)
+    : m_boardSize(boardSize)
+    , m_cellSize(cellSize)
+    , m_boardTopLeft(boardTopLeft)
+    , m_font(font)
+    , m_texGradientLine(ResourceManager::getInstance().getTexture("territory_line"))
+    , m_currentPhase(Phase::Idle)
+    , m_timer(0.f)
+    , m_animTimer(0.f)
+    , m_soundTimer(0.f)
 {
-    m_showScoreboard = false;
+    auto& gs = GlobalSetting::getInstance();
+    auto& rm = ResourceManager::getInstance();
 
-    m_gridEffects.resize(m_boardSize, std::vector<TileEffect>(m_boardSize));
+    m_boardSprite.setTexture(rm.getTexture("scoreboard"));
+    sf::FloatRect b = m_boardSprite.getLocalBounds();
+    m_boardSprite.setOrigin(b.width / 2.f, b.height / 2.f);
+    m_boardSprite.setColor(sf::Color(255, 255, 255, 0));
 
-    float radius = (m_cellSize * CIRCLE_SIZE_RATIO) / 2.f;
+    m_stampSprite.setColor(sf::Color(255, 255, 255, 0));
 
-    for(int y = 0; y < m_boardSize; ++y)
+    std::string blackKey = gs.getStoneTextureKey(true, 13);
+    std::string whiteKey = gs.getStoneTextureKey(false, 13);
+
+    m_iconBlackStone.setTexture(rm.getTexture(blackKey));
+    m_iconWhiteStone.setTexture(rm.getTexture(whiteKey));
+
+    sf::FloatRect bounds = m_iconBlackStone.getLocalBounds();
+    m_iconBlackStone.setOrigin(bounds.width / 2.f, bounds.height / 2.f);
+
+    bounds = m_iconWhiteStone.getLocalBounds();
+    m_iconWhiteStone.setOrigin(bounds.width / 2.f, bounds.height / 2.f);
+
+    for(int i = 0; i < 4; ++i)
     {
-        for(int x = 0; x < m_boardSize; ++x)
-        {
-            m_gridEffects[y][x].shape.setRadius(radius);
-            m_gridEffects[y][x].shape.setOrigin(sf::Vector2f(std::round(radius), std::round(radius)));
-            m_gridEffects[y][x].shape.setPosition
-            (
-                std::round(m_boardTopLeft.x + x*m_cellSize),
-                std::round(m_boardTopLeft.y + y*m_cellSize)
-            );
-        }
+        m_txtScoreBlack[i].setFont(m_font);
+        m_txtScoreBlack[i].setCharacterSize(28);
+        m_txtScoreBlack[i].setFillColor(sf::Color::Black);
+
+        m_txtScoreWhite[i].setFont(m_font);
+        m_txtScoreWhite[i].setCharacterSize(28);
+        m_txtScoreWhite[i].setFillColor(sf::Color::White);
+
+        m_curScoreBlack[i] = 0.f;
+        m_curScoreWhite[i] = 0.f;
     }
 
+    m_soundTick.setBuffer(rm.getSoundBuffer("count_tick"));
+    m_soundStamp.setBuffer(rm.getSoundBuffer("stamp_impact"));
 
-    m_scorePanel.setSize({700.f, 500.f});
-    m_scorePanel.setFillColor(sf::Color(40, 40, 40, 235));
-    m_scorePanel.setOutlineColor(sf::Color(200, 200, 200));
-    m_scorePanel.setOutlineThickness(2.f);
-
-
-    m_txtTitle.setFont(m_font);
-    m_txtTitle.setCharacterSize(36);
-    m_txtTitle.setFillColor(sf::Color::Yellow);
-    m_txtTitle.setString("GAME RESULTS");
-
-
-    m_txtResult.setFont(m_font);
-    m_txtResult.setCharacterSize(32);
-    m_txtResult.setStyle(sf::Text::Bold);
-
-
-    m_txtInstruction.setFont(m_font);
-    m_txtInstruction.setCharacterSize(16);
-    m_txtInstruction.setFillColor(sf::Color(180, 180, 180));
-    m_txtInstruction.setString("( Click inside this board to return to Menu )");
-
-
-    m_dimmer.setSize({2000.f, 2000.f});
-    m_dimmer.setFillColor(sf::Color(0,0,0,0));
+    float vol = GlobalSetting::getInstance().sfxVolume;
+    m_soundTick.setVolume(vol);
+    m_soundStamp.setVolume(vol);
 }
-
-
-bool ScoringOverlay::contains(sf::Vector2f point) const
-{
-    if(!m_showScoreboard) return false;
-    return m_scorePanel.getGlobalBounds().contains(point);
-}
-
-
-void ScoringOverlay::addLine(float x, float y, float w, float h)
-{
-    sf::RectangleShape line({w, h});
-    line.setFillColor(sf::Color(150, 150, 150));
-    line.setPosition(x, y);
-    m_tableLines.push_back(line);
-}
-
-
-void ScoringOverlay::addCellText(const std::string& str, float x, float y, bool isHeader, sf::Color color)
-{
-    sf::Text text;
-    text.setFont(m_font);
-    text.setString(str);
-    text.setCharacterSize(isHeader ? 22 : 20);
-    text.setFillColor(color);
-    if(isHeader) text.setStyle(sf::Text::Bold);
-
-
-    sf::FloatRect b = text.getLocalBounds();
-    text.setOrigin(b.left + b.width/2.f, b.top + b.height/2.f);
-    text.setPosition(x, y);
-
-    m_tableTexts.push_back(text);
-}
-
-void ScoringOverlay::startAnimation(const std::vector<std::vector<TerritoryOwner>>& territoryMap,
-                                    const std::vector<std::vector<StoneType>>& boardState)
-{
-    m_currentPhase = Phase::BlackSpreading;
-    m_timer = 0.f;
-    m_maxBlackDelay = 0.f;
-    m_maxWhiteDelay = 0.f;
-
-
-    std::queue<std::pair<int, int>> q;
-    std::vector<std::vector<int>> distance(m_boardSize, std::vector<int>(m_boardSize, -1));
-
-    for(int y = 0; y < m_boardSize; ++y)
-    {
-        for(int x = 0; x < m_boardSize; ++x)
-        {
-            if(boardState[y][x] != StoneType::Empty)
-            {
-                q.push({x, y});
-                distance[y][x] = 0;
-            }
-        }
-    }
-
-    int dx[] = {0, 0, 1, -1};
-    int dy[] = {1, -1, 0, 0};
-
-    while(!q.empty())
-    {
-        auto curr = q.front();
-        q.pop();
-
-        for(int i = 0; i < 4; ++i)
-        {
-            int nx = curr.first + dx[i]; int ny = curr.second + dy[i];
-            if(nx < 0 || nx >= m_boardSize || ny < 0 || ny >= m_boardSize) continue;
-
-            if(distance[ny][nx] == -1 && territoryMap[ny][nx] != TerritoryOwner::None)
-            {
-                distance[ny][nx] = distance[curr.second][curr.first] + 1;
-                q.push({nx, ny});
-            }
-        }
-    }
-
-
-    for(int y = 0; y < m_boardSize; ++y)
-    {
-        for(int x = 0; x < m_boardSize; ++x)
-        {
-            TileEffect& fx = m_gridEffects[y][x];
-            fx.owner = territoryMap[y][x];
-            fx.alpha = 0.f;
-            fx.active = false;
-
-            int dist = (distance[y][x] == -1) ? 0 : distance[y][x];
-            float calculatedDelay = dist * WAVE_SPEED_FACTOR;
-
-            if(fx.owner == TerritoryOwner::Black)
-            {
-                fx.shape.setFillColor(sf::Color::Black);
-                fx.targetAlpha = TARGET_ALPHA;
-                fx.delay = calculatedDelay;
-                fx.active = true;
-                m_maxBlackDelay = std::max(m_maxBlackDelay, calculatedDelay);
-            }
-
-            else if(fx.owner == TerritoryOwner::White)
-            {
-                fx.shape.setFillColor(sf::Color::White);
-                fx.targetAlpha = TARGET_ALPHA;
-                fx.delay = calculatedDelay;
-                fx.active = true;
-                m_maxWhiteDelay = std::max(m_maxWhiteDelay, calculatedDelay);
-            }
-
-            else
-            {
-                fx.active = false;
-            }
-        }
-    }
-}
-
 
 void ScoringOverlay::setScoreData(const ScoreData& data)
 {
-    m_tableLines.clear();
-    m_tableTexts.clear();
+    m_data = data;
+    auto& rm = ResourceManager::getInstance();
 
-
-    float totalBlack = data.blackStones + data.blackTerritory;
-    float totalWhite = data.whiteStones + data.whiteTerritory + data.komi;
-    float diff = std::abs(totalBlack - totalWhite);
-
-
-    std::stringstream ssRes;
-    if(totalBlack > totalWhite)
+    for(int i = 0; i < 4; ++i)
     {
-        ssRes << "BLACK WINS! (+" << std::fixed << std::setprecision(1) << diff << ")";
-        m_txtResult.setFillColor(sf::Color(100, 255, 100));
+        m_curScoreBlack[i] = 0.f;
+        m_curScoreWhite[i] = 0.f;
+    }
+
+    float totalB = data.blackStones + data.blackTerritory;
+    float totalW = data.whiteStones + data.whiteTerritory + data.komi;
+
+    if(totalB > totalW)
+    {
+        m_stampSprite.setTexture(rm.getTexture("stamp_black_wins"));
     }
     else
     {
-        ssRes << "WHITE WINS! (+" << std::fixed << std::setprecision(1) << diff << ")";
-        m_txtResult.setFillColor(sf::Color(100, 255, 100));
+        m_stampSprite.setTexture(rm.getTexture("stamp_white_wins"));
     }
-    m_txtResult.setString(ssRes.str());
 
+    sf::FloatRect sb = m_stampSprite.getLocalBounds();
+    m_stampSprite.setOrigin(sb.width / 2.f, sb.height / 2.f);
 
-    float startY = -80.f;
-    float rowH = 40.f;
-    float col1W = 180.f;
-    float col2W = 150.f;
-    float col3W = 150.f;
-    float tableW = col1W + col2W + col3W;
+    double angle = rand() % 40 - 10;
+    m_stampSprite.rotate(angle);
 
-    float startX = -tableW / 2.f;
+    float diff = std::abs(totalB - totalW);
+    m_countDuration = std::max(1.0f, std::min(diff * 0.05f, 2.5f));
+}
 
+void ScoringOverlay::showSimpleResult(const std::string& message, bool blackWon)
+{
+    m_timer = 0.f;
+    m_animTimer = 0.f;
+    m_isSimpleMode = true;
 
-    addCellText("CATEGORY", startX + col1W / 2, startY + rowH / 2, true, sf::Color(255, 200, 0));
-    addCellText("BLACK",    startX + col1W + col2W / 2, startY + rowH / 2, true);
-    addCellText("WHITE",    startX + col1W + col2W + col3W / 2, startY + rowH / 2, true);
+    auto& rm = ResourceManager::getInstance();
+    m_boardSprite.setTexture(rm.getTexture("game_result_board"), true);
 
+    sf::FloatRect b = m_boardSprite.getLocalBounds();
+    m_boardSprite.setOrigin(b.width / 2.f, b.height / 2.f);
 
-    addLine(startX, startY + rowH, tableW, 2.f);
+    m_simpleResultText.setFont(m_font);
+    m_simpleResultText.setString(message);
+    m_simpleResultText.setCharacterSize(30);
+    m_simpleResultText.setFillColor(sf::Color::Black);
+    m_simpleResultText.setStyle(sf::Text::Bold);
 
+    sf::FloatRect tb = m_simpleResultText.getLocalBounds();
+    m_simpleResultText.setOrigin(tb.left + tb.width / 2.f, tb.top + tb.height / 2.f);
 
-    float y1 = startY + rowH;
-    addCellText("Territory", startX + col1W / 2, y1 + rowH / 2);
-    addCellText(std::to_string(data.blackTerritory), startX + col1W + col2W / 2, y1 + rowH / 2);
-    addCellText(std::to_string(data.whiteTerritory), startX + col1W + col2W + col3W / 2, y1 + rowH / 2);
-    addLine(startX, y1 + rowH, tableW, 1.f);
+    if(blackWon) m_stampSprite.setTexture(rm.getTexture("stamp_black_wins"));
+    else m_stampSprite.setTexture(rm.getTexture("stamp_white_wins"));
 
+    sf::FloatRect sb = m_stampSprite.getLocalBounds();
+    m_stampSprite.setOrigin(sb.width / 2.f, sb.height / 2.f);
 
-    float y2 = y1 + rowH;
-    addCellText("Stones", startX + col1W / 2, y2 + rowH / 2);
-    addCellText(std::to_string(data.blackStones), startX + col1W + col2W / 2, y2 + rowH / 2);
-    addCellText(std::to_string(data.whiteStones), startX + col1W + col2W + col3W / 2, y2 + rowH / 2);
-    addLine(startX, y2 + rowH, tableW, 1.f);
+    double angle = rand() % 40 - 10;
+    m_stampSprite.rotate(angle);
 
-
-    float y3 = y2 + rowH;
-    addCellText("Komi", startX + col1W / 2, y3 + rowH / 2);
-    addCellText("0.0", startX + col1W + col2W / 2, y3 + rowH / 2);
-
-    std::stringstream ssKomi; ssKomi << std::fixed << std::setprecision(1) << data.komi;
-    addCellText(ssKomi.str(), startX + col1W + col2W + col3W / 2, y3 + rowH / 2);
-    addLine(startX, y3 + rowH, tableW, 2.f);
-
-
-    float y4 = y3 + rowH;
-    addCellText("TOTAL", startX + col1W / 2, y4 + rowH / 2, true, sf::Color::Cyan);
-
-    std::stringstream ssTotalB; ssTotalB << std::fixed << std::setprecision(1) << totalBlack;
-    addCellText(ssTotalB.str(), startX + col1W + col2W / 2, y4 + rowH / 2, true, sf::Color::Cyan);
-
-    std::stringstream ssTotalW; ssTotalW << std::fixed << std::setprecision(1) << totalWhite;
-    addCellText(ssTotalW.str(), startX + col1W + col2W + col3W / 2, y4 + rowH / 2, true, sf::Color::Cyan);
-
-
-    float totalH = rowH * 5;
-    addLine(startX + col1W, startY, 1.f, totalH);
-    addLine(startX + col1W + col2W, startY, 1.f, totalH);
+    m_currentPhase = Phase::BoardAppear;
+    m_boardSprite.setScale(2.0f, 2.0f);
+    m_boardSprite.setColor(sf::Color(255, 255, 255, 0));
 }
 
 void ScoringOverlay::update(float deltaTime)
 {
-    if(m_currentPhase == Phase::Finished) return;
+    if(m_currentPhase == Phase::Finished || m_currentPhase == Phase::Idle) return;
 
     m_timer += deltaTime;
 
-
-    if(m_currentPhase == Phase::BlackSpreading)
+    if(m_currentPhase == Phase::DeadStoneAnim)
     {
-        for(auto &row : m_gridEffects)
+        if(m_timer >= DEAD_STONE_DURATION)
         {
-            for(auto &fx : row)
-            {
-                if(fx.active && fx.owner == TerritoryOwner::Black)
-                {
-                    if(m_timer >= fx.delay)
-                    {
-                        if(fx.alpha < fx.targetAlpha)
-                        {
-                            fx.alpha += deltaTime * 400.f;
-                            if(fx.alpha > fx.targetAlpha) fx.alpha = fx.targetAlpha;
-                        }
-
-                        sf::Color c = fx.shape.getFillColor();
-                        c.a = (sf::Uint8)fx.alpha;
-                        fx.shape.setFillColor(c);
-                    }
-                }
-            }
+            m_currentPhase = Phase::DeadStoneDelay;
+            m_timer = 0.f;
         }
-
-        if(m_timer > m_maxBlackDelay + 0.5f)
+    }
+    else if(m_currentPhase == Phase::DeadStoneDelay)
+    {
+        if(m_timer >= DEAD_STONE_DELAY)
+        {
+            m_currentPhase = Phase::BlackWave;
+            m_timer = 0.f;
+        }
+    }
+    else if(m_currentPhase == Phase::BlackWave)
+    {
+        bool done = updatePhaseLogic(deltaTime, TerritoryOwner::Black, m_maxDistBlack);
+        if(done)
         {
             m_currentPhase = Phase::Intermission;
             m_timer = 0.f;
         }
     }
-
     else if(m_currentPhase == Phase::Intermission)
     {
         if(m_timer > DELAY_BETWEEN_SIDES)
         {
-            m_currentPhase = Phase::WhiteSpreading;
+            m_currentPhase = Phase::WhiteWave;
             m_timer = 0.f;
         }
     }
-
-    else if(m_currentPhase == Phase::WhiteSpreading)
+    else if(m_currentPhase == Phase::WhiteWave)
     {
-        for(auto &row : m_gridEffects)
-        {
-            for(auto &fx : row)
-            {
-                if(fx.active && fx.owner == TerritoryOwner::White)
-                {
-                    if(m_timer >= fx.delay)
-                    {
-                        if(fx.alpha < fx.targetAlpha)
-                        {
-                            fx.alpha += deltaTime * 400.f;
-                            if(fx.alpha > fx.targetAlpha) fx.alpha = fx.targetAlpha;
-                        }
-                        sf::Color c = fx.shape.getFillColor();
-                        c.a = (sf::Uint8)fx.alpha;
-                        fx.shape.setFillColor(c);
-                    }
-                }
-            }
-        }
-        if(m_timer > m_maxWhiteDelay + 0.5f)
+        bool done = updatePhaseLogic(deltaTime, TerritoryOwner::White, m_maxDistWhite);
+        if(done)
         {
             m_currentPhase = Phase::FinalDelay;
             m_timer = 0.f;
@@ -344,65 +196,582 @@ void ScoringOverlay::update(float deltaTime)
     }
     else if(m_currentPhase == Phase::FinalDelay)
     {
-        if(m_timer > DELAY_BEFORE_SCOREBOARD)
+        float fadeDuration = 2.0f;
+
+        float progress = m_timer / fadeDuration;
+
+        updateDisappear(progress);
+
+        if(progress >= 1.0f)
         {
-            m_currentPhase = Phase::Finished;
-            m_showScoreboard = true;
+            updateDisappear(1.0f);
+
+            m_currentPhase = Phase::BoardAppear;
+            m_animTimer = 0.f;
+
+            m_boardSprite.setScale(2.0f, 2.0f);
+            m_boardSprite.setColor(sf::Color(255, 255, 255, 0));
+        }
+    }
+
+    else if(m_currentPhase == Phase::BoardAppear)
+    {
+        m_animTimer += deltaTime;
+        updateBoardAppear(deltaTime);
+    }
+    else if(m_currentPhase == Phase::Counting)
+    {
+        if(m_isSimpleMode)
+        {
+            m_currentPhase = Phase::StampAppear;
+            m_animTimer = 0.f;
+            m_soundStamp.setVolume(GlobalSetting::getInstance().sfxVolume);
+            m_soundStamp.play();
+        }
+        else
+        {
+            m_animTimer += deltaTime;
+            updateCounting(deltaTime);
+        }
+    }
+    else if(m_currentPhase == Phase::StampAppear)
+    {
+        m_animTimer += deltaTime;
+        updateStampAppear(deltaTime);
+    }
+}
+
+float ScoringOverlay::easeOutBack(float x)
+{
+    const float c1 = 1.70158f;
+    const float c3 = c1 + 1.f;
+    return 1.f + c3 * std::pow(x - 1.f, 3.f) + c1 * std::pow(x - 1.f, 2.f);
+}
+
+void ScoringOverlay::updateBoardAppear(float dt)
+{
+    float duration = 0.5f;
+    float progress = m_animTimer / duration;
+
+    if(progress >= 1.f)
+    {
+        m_boardSprite.setScale(1.f, 1.f);
+        m_boardSprite.setColor(sf::Color::White);
+
+        m_currentPhase = Phase::Counting;
+        m_animTimer = 0.f;
+        return;
+    }
+
+    float scale = 2.0f - 1.0f * easeOutBack(progress);
+    m_boardSprite.setScale(scale, scale);
+
+    float alpha = std::min(255.f, progress * 4.f * 255.f);
+    m_boardSprite.setColor(sf::Color(255, 255, 255, (sf::Uint8)alpha));
+}
+
+void ScoringOverlay::updateCounting(float dt)
+{
+    float progress = m_animTimer / m_countDuration;
+    if(progress >= 1.f) progress = 1.f;
+
+    float ratio = 1.f - std::pow(1.f - progress, 3.f);
+
+    m_curScoreBlack[0] = m_data.blackStones * ratio;
+    m_curScoreBlack[1] = m_data.blackTerritory * ratio;
+    m_curScoreBlack[2] = 0.f * ratio;
+    m_curScoreBlack[3] = (m_data.blackStones + m_data.blackTerritory) * ratio;
+
+    m_curScoreWhite[0] = m_data.whiteStones * ratio;
+    m_curScoreWhite[1] = m_data.whiteTerritory * ratio;
+    m_curScoreWhite[2] = m_data.komi * ratio;
+    m_curScoreWhite[3] = (m_data.whiteStones + m_data.whiteTerritory + m_data.komi) * ratio;
+
+    m_soundTimer += dt;
+    if(progress < 1.f && m_soundTimer > 0.08f)
+    {
+        m_soundTimer = 0.f;
+
+        m_soundTick.setPitch(0.95f + (std::rand() % 10) / 100.f);
+        m_soundTick.play();
+    }
+
+    if(progress >= 1.f)
+    {
+        m_currentPhase = Phase::StampAppear;
+        m_animTimer = 0.f;
+
+        m_soundStamp.setVolume(GlobalSetting::getInstance().sfxVolume);
+        m_soundStamp.play();
+    }
+}
+
+void ScoringOverlay::updateStampAppear(float dt)
+{
+    float duration = 0.4f;
+    float progress = m_animTimer / duration;
+
+    if(progress >= 1.f)
+    {
+        m_stampSprite.setScale(1.f, 1.f);
+        m_stampSprite.setColor(sf::Color::White);
+        m_currentPhase = Phase::Finished;
+        return;
+    }
+
+    float scale = 3.0f - 2.0f * easeOutBack(progress);
+    m_stampSprite.setScale(scale, scale);
+
+    float alpha = std::min(255.f, progress * 5.f * 255.f);
+    m_stampSprite.setColor(sf::Color(255, 255, 255, (sf::Uint8)alpha));
+}
+
+void ScoringOverlay::updateDisappear(float progress)
+{
+    float coef = std::sin(progress * PI / 2.f);
+    float newAlpha = BORDER_ALPHA * (1.f - coef);
+    if(newAlpha < 0.f) newAlpha = 0.f;
+
+    sf::Color cBlack(0, 0, 0, (sf::Uint8)newAlpha);
+    sf::Color cWhite(255, 255, 255, (sf::Uint8)newAlpha);
+
+    for(auto& comps : m_ConnectedComponents)
+    {
+        for(auto& edge : comps.activeEdges)
+        {
+            if(comps.owner == TerritoryOwner::Black) edge.sprite.setColor(cBlack);
+            else edge.sprite.setColor(cWhite);
         }
     }
 }
+
 void ScoringOverlay::draw(sf::RenderTarget& target)
 {
-    for(const auto &row : m_gridEffects)
+    renderDeadStones(target);
+
+    if(m_currentPhase != Phase::BoardAppear &&
+       m_currentPhase != Phase::Counting &&
+       m_currentPhase != Phase::StampAppear &&
+       m_currentPhase != Phase::Finished)
     {
-        for(const auto &fx : row)
+//        std::cout << "draw did draw\n";
+        for(const auto& comps : m_ConnectedComponents)
         {
-            if(fx.active && fx.alpha > 0.f)
+            if(!comps.isActive) continue;
+            for(const auto& edge : comps.activeEdges)
             {
-                target.draw(fx.shape);
+                if(edge.sprite.getScale().y > 0.001f)
+                {
+                    target.draw(edge.sprite);
+                }
             }
         }
     }
 
-
-    if(m_showScoreboard)
+    if(m_currentPhase == Phase::BoardAppear ||
+       m_currentPhase == Phase::Counting ||
+       m_currentPhase == Phase::StampAppear ||
+       m_currentPhase == Phase::Finished)
     {
         sf::Vector2u winSize = target.getSize();
         sf::Vector2f center(winSize.x / 2.f, winSize.y / 2.f);
 
+        if(m_isSimpleMode) m_boardSprite.setPosition(sf::Vector2f(1387.f, 462.f + 80.f));
+        else m_boardSprite.setPosition(sf::Vector2f(1387.f, 462.f));
+        target.draw(m_boardSprite);
 
-        m_scorePanel.setOrigin(350.f, 250.f);
-        m_scorePanel.setPosition(center);
-        target.draw(m_scorePanel);
+        if(m_currentPhase != Phase::BoardAppear)
+        {
+            if(m_isSimpleMode)
+            {
+                m_simpleResultText.setPosition(1387.f, 460 + 80.f);
+                target.draw(m_simpleResultText);
+            }
 
+            else
+            {
+                auto drawText = [&](sf::Text& txt, float val, float x, float y)
+                {
+                    std::stringstream ss;
+                    ss << std::fixed << std::setprecision(1) << val;
+                    txt.setString(ss.str());
 
-        sf::FloatRect titleB = m_txtTitle.getLocalBounds();
-        m_txtTitle.setOrigin(titleB.left + titleB.width / 2.f, titleB.top + titleB.height / 2.f);
-        m_txtTitle.setPosition(center.x, center.y - 200.f);
-        target.draw(m_txtTitle);
+                    sf::FloatRect b = txt.getLocalBounds();
+                    txt.setOrigin(b.width / 2.f, b.height / 2.f);
+                    txt.setPosition(x, y);
+                    target.draw(txt);
+                };
 
+                const float leftX = 1387.f;
+                const float disX = 103.f;
+                const float topY = 405.f;
+                const float disY = 58.f;
 
-        sf::FloatRect resB = m_txtResult.getLocalBounds();
-        m_txtResult.setOrigin(resB.left + resB.width / 2.f, resB.top + resB.height / 2.f);
-        m_txtResult.setPosition(center.x, center.y + 160.f);
-        target.draw(m_txtResult);
+                m_iconBlackStone.setPosition(leftX, 336.f);
+                m_iconWhiteStone.setPosition(leftX + disX, 336.f);
 
+                target.draw(m_iconBlackStone);
+                target.draw(m_iconWhiteStone);
 
-        sf::FloatRect insB = m_txtInstruction.getLocalBounds();
-        m_txtInstruction.setOrigin(insB.left + insB.width / 2.f, insB.top + insB.height / 2.f);
-        m_txtInstruction.setPosition(center.x, center.y + 220.f);
-        target.draw(m_txtInstruction);
+                drawText(m_txtScoreBlack[0], m_curScoreBlack[0], leftX, topY);
+                drawText(m_txtScoreBlack[1], m_curScoreBlack[1], leftX, topY + disY);
+                drawText(m_txtScoreBlack[2], m_curScoreBlack[2], leftX, topY + 2 * disY);
+                drawText(m_txtScoreBlack[3], m_curScoreBlack[3], leftX, topY + 3 * disY);
 
+                drawText(m_txtScoreWhite[0], m_curScoreWhite[0], leftX + disX, topY);
+                drawText(m_txtScoreWhite[1], m_curScoreWhite[1], leftX + disX, topY + disY);
+                drawText(m_txtScoreWhite[2], m_curScoreWhite[2], leftX + disX, topY + 2 * disY);
+                drawText(m_txtScoreWhite[3], m_curScoreWhite[3], leftX + disX, topY + 3 * disY);
+            }
+        }
 
-        sf::Transform transform;
-        transform.translate(center);
-        for (const auto &line : m_tableLines) target.draw(line, transform);
-        for (const auto &text : m_tableTexts) target.draw(text, transform);
+        if(m_currentPhase == Phase::StampAppear || m_currentPhase == Phase::Finished)
+        {
+            if(m_isSimpleMode) m_stampSprite.setPosition(sf::Vector2f(1238.f, 380.f + 80.f));
+            else m_stampSprite.setPosition(sf::Vector2f(1285.f, 330.f));
+            m_stampSprite.setColor(sf::Color::Red);
+            target.draw(m_stampSprite);
+        }
     }
+}
+
+void ScoringOverlay::startAnimation(const std::vector<TerritoryRegion>& regions, const std::vector<DeadStoneInfo>& deadStones)
+{
+    std::vector < std::vector <bool> > visited(m_boardSize + 1, std::vector <bool> (m_boardSize + 1, false));
+    m_adjNodes.clear();
+    m_adjNodes.assign(m_boardSize + 1, std::vector<std::vector<Node>>(m_boardSize + 1));
+
+    m_ConnectedComponents.clear();
+    m_timer = 0.f;
+    m_deadStones = deadStones;
+    m_maxDistBlack = 0.f;
+    m_maxDistWhite = 0.f;
+
+    auto PixelDistance = [*this](sf::Vector2i pivot, sf::Vector2i p) -> int
+    {
+        float x = std::abs(pivot.x - p.x) * m_cellSize;
+        float y = std::abs(pivot.y - p.y) * m_cellSize;
+        x = x * x;
+        y = y * y;
+        return std::sqrt(x + y);
+    };
+
+    for(const auto &r : regions)
+    {
+        if(r.owner != TerritoryOwner::Black && r.owner != TerritoryOwner::White)
+        {
+            continue;
+        }
+        for(auto &p : r.points)
+        {
+            int y = p.y, x = p.x;
+
+            for(int dir = 0; dir < 4; ++dir)
+            {
+                int ny = y + dy[dir], nx = x + dx[dir];
+
+                bool found = false;
+                for(auto &q : r.points) if(q.y == ny && q.x == nx)
+                {
+                    found = true;
+                    break;
+                }
+
+                if(!found)
+                {
+                    sf::Vector2i u = sf::Vector2i(x, y);
+                    sf::Vector2i v = sf::Vector2i(x + 1, y + 1);
+
+                    if(!(dir & 1)) v.x += dx[dir], v.y += dy[dir];
+                    else u.x += dx[dir], u.y += dy[dir];
+
+                    m_adjNodes[u.y][u.x].push_back(Node(v, sf::Vector2i(-dx[dir], -dy[dir]), m_adjNodes[v.y][v.x].size()));
+                    m_adjNodes[v.y][v.x].push_back(Node(u, sf::Vector2i(-dx[dir], -dy[dir]), m_adjNodes[u.y][u.x].size() - 1));
+
+//                    std::cout << "edge found!: " << u.y << " " << u.x << " -> " << v.y << " " << v.x << "\n";
+                }
+            }
+        }
+
+        m_ConnectedComponents.emplace_back();
+        auto &curComp = m_ConnectedComponents.back();
+
+        for(auto &p : r.points) if(!visited[p.y][p.x])
+        {
+            std::deque <sf::Vector2i> que; que.clear();
+            que.push_back(p);
+
+            while(!que.empty())
+            {
+                sf::Vector2i u = que.front();
+                que.pop_front();
+
+                curComp.allPoints.push_back(u);
+
+                for(auto &adj : m_adjNodes[u.y][u.x]) if(!visited[adj.v.y][adj.v.x])
+                {
+                    visited[adj.v.y][adj.v.x] = true;
+                    que.push_back(adj.v);
+                }
+            }
+        }
+
+        curComp.owner = r.owner;
+
+        sf::Vector2i pivot;
+        if(curComp.owner == TerritoryOwner::Black) pivot = sf::Vector2i(0, 0);
+        else pivot = sf::Vector2i(m_boardSize, m_boardSize);
+
+        bool hasPoint = false;
+
+        for(auto &p : curComp.allPoints)
+        {
+            hasPoint = true;
+
+            if(curComp.anchorDistance > PixelDistance(pivot, p))
+            {
+                curComp.anchorDistance = PixelDistance(pivot, p);
+                curComp.anchorPoint = p;
+
+//                std::cout << "anchor Point candidate: " << p.y << " " << p.x << "\n";
+            }
+        }
+
+        if(!hasPoint)
+        {
+            curComp.isFinished = true;
+            curComp.isActive = true;
+            curComp.anchorDistance = 0.f;
+        }
+
+        if(curComp.owner == TerritoryOwner::Black)
+            m_maxDistBlack = std::max(m_maxDistBlack, curComp.anchorDistance + 100.f);
+        else
+            m_maxDistWhite = std::max(m_maxDistWhite, curComp.anchorDistance + 100.f);
+    }
+
+    std::sort(m_ConnectedComponents.begin(), m_ConnectedComponents.end(),
+    [](const auto& a, const auto& b)
+    {
+        return a.anchorDistance < b.anchorDistance;
+    }
+    );
+
+
+
+//    for(auto &comps : m_ConnectedComponents)
+//    {
+//        std::cout << (comps.owner == TerritoryOwner::Black ? "Belong to Black:\n" : "Belong to White:\n");
+//        std::cout << "anchor Point: " << comps.anchorPoint.y << " " << comps.anchorPoint.x << "\n";
+//        std::cout << "list of points:\n";
+//        for(auto &p : comps.allPoints) std::cout << p.y << " " << p.x << "\n";
+//        std::cout << "\n";
+//    }
+
+
+    if(!m_deadStones.empty()) m_currentPhase = Phase::DeadStoneAnim;
+    else m_currentPhase = Phase::BlackWave;
+}
+
+void ScoringOverlay::spawnEdge(VirtualConnectedComponent& curComp, const sf::Vector2i &parent)
+{
+    auto RadToDeg = [*this](const float a) -> float
+    {
+        return a * 180.f / PI;
+    };
+
+    auto DegToRad = [*this](const float a) -> float
+    {
+        return a * PI / 180.f;
+    };
+
+    auto BoardToPixelCoord = [*this](sf::Vector2i p) -> sf::Vector2f
+    {
+        return sf::Vector2f(std::round(m_boardTopLeft.x + p.x * m_cellSize - m_cellSize * BORDER_OFFSET_RATIO),
+                            std::round(m_boardTopLeft.y + p.y * m_cellSize - m_cellSize * BORDER_OFFSET_RATIO));
+    };
+
+    for(auto &adj : m_adjNodes[parent.y][parent.x])
+    {
+        int y = adj.v.y, x = adj.v.x;
+        sf::Vector2i dir = adj.dir;
+
+        if(y < 0 || y > m_boardSize || x < 0 || x > m_boardSize) continue;
+
+        if(adj.isDrawn) continue;
+        adj.isDrawn = true;
+        m_adjNodes[y][x][adj.ind].isDrawn = true;
+
+        int dy = y - parent.y, dx = x - parent.x;
+
+        ActiveEdge edge;
+        edge.sprite.setTexture(m_texGradientLine);
+
+        if(curComp.owner == TerritoryOwner::Black) edge.sprite.setColor(sf::Color(0, 0, 0, BORDER_ALPHA));
+        else edge.sprite.setColor(sf::Color(255, 255, 255, BORDER_ALPHA));
+
+        sf::FloatRect bounds = edge.sprite.getLocalBounds();
+        edge.targetScaleY = (m_cellSize + 0.3f) / bounds.height;
+
+        float angleByOx = RadToDeg(std::atan2(-dy, dx));
+        float angleByOriginal = 270.f - angleByOx;
+
+        edge.sprite.rotate(angleByOriginal);
+
+        sf::Vector2i graDirection = sf::Vector2i(1, 0);
+        graDirection = sf::Vector2i(graDirection.x * std::cos(DegToRad(angleByOriginal)) + graDirection.y * std::sin(DegToRad(angleByOriginal)),
+                                    -graDirection.x * std::sin(DegToRad(angleByOriginal)) + graDirection.y * std::cos(DegToRad(angleByOriginal)));
+
+        graDirection.y = -graDirection.y;
+
+        float scaleX = m_cellSize / bounds.width;
+
+        if(graDirection != dir) scaleX = -scaleX;
+
+        edge.sprite.setScale(sf::Vector2f(scaleX, 0.f));
+
+        edge.sprite.setPosition(BoardToPixelCoord(parent));
+
+        edge.endNode = sf::Vector2i(x, y);
+
+//        std::cout << "New Edge Spawned!: " << parent.y << " " << parent.x << " -> " << y << " " << x << "\n";
+
+        curComp.activeEdges.push_back(edge);
+    }
+}
+
+bool ScoringOverlay::updatePhaseLogic(float deltaTime, TerritoryOwner targetOwner, float maxDist)
+{
+    auto BoardToPixelCoord = [*this](sf::Vector2i p) -> sf::Vector2i
+    {
+        return sf::Vector2i(m_boardTopLeft.x + p.x * m_cellSize - m_cellSize * BORDER_OFFSET_RATIO,
+                            m_boardTopLeft.y + p.y * m_cellSize - m_cellSize * BORDER_OFFSET_RATIO);
+    };
+
+    bool allComponentsDone = true;
+
+    for(auto &comps : m_ConnectedComponents)
+    {
+        if(comps.owner != targetOwner) continue;
+        if(comps.isFinished) continue;
+
+        allComponentsDone = false;
+        bool changeMade = false;
+//        std::cout << changeMade << " ";
+
+        if(!comps.isActive)
+        {
+            comps.isActive = true;
+
+            sf::Vector2i &parent = comps.anchorPoint;
+
+            spawnEdge(comps, comps.anchorPoint);
+        }
+
+        size_t n = comps.activeEdges.size();
+        for(size_t i = 0; i < n; ++i)
+        {
+            ActiveEdge& edge = comps.activeEdges[i];
+            if(edge.isTriggered) continue;
+
+            edge.progress += deltaTime / EDGE_GROW_DURATION;
+            if(edge.progress >= 1.f) edge.progress = 1.f;
+
+            float curScaleY = edge.targetScaleY * edge.progress;
+            sf::Vector2f sScale = edge.sprite.getScale();
+            edge.sprite.setScale(sScale.x, curScaleY);
+
+            changeMade = true;
+
+            if(edge.progress >= 1.f && !edge.isTriggered)
+            {
+                edge.isTriggered = true;
+                spawnEdge(comps, edge.endNode);
+            }
+        }
+
+        if(!changeMade)
+        {
+            comps.isFinished = true;
+//            std::cout << "yes we complete this one! ";
+        }
+//        std::cout << changeMade << " : " << comps.isFinished << "\n";
+        break;
+    }
+
+//    std::cout << "\n";
+    return allComponentsDone;
 }
 
 bool ScoringOverlay::isAnimationFinished() const
 {
     return m_currentPhase == Phase::Finished;
 }
-bool ScoringOverlay::isScoreboardVisible() const { return m_showScoreboard; }
+bool ScoringOverlay::isScoreboardVisible() const
+{
+    return m_currentPhase == Phase::Finished;
+}
+
+bool ScoringOverlay::contains(const sf::Vector2f& point, sf::Vector2u windowSize) const
+{
+    if(m_currentPhase != Phase::Finished) return false;
+
+    sf::FloatRect bounds = m_boardSprite.getGlobalBounds();
+    return bounds.contains(point);
+}
+
+void ScoringOverlay::renderDeadStones(sf::RenderTarget& target)
+{
+    if(m_deadStones.empty()) return;
+
+    float alpha = 255.f;
+    float scale = 1.0f;
+
+    if(m_currentPhase == Phase::DeadStoneAnim)
+    {
+        float progress = m_timer / DEAD_STONE_DURATION;
+        if(progress > 1.0f) progress = 1.0f;
+
+        float smooth = std::sin(progress * PI / 2.0f);
+
+        alpha = 255.f + smooth * (FINAL_ALPHA - 255.f);
+
+        scale = 1.0f + smooth * (FINAL_SCALE - 1.0f);
+    }
+    else if(m_currentPhase == Phase::Idle)
+    {
+        alpha = 255.f;
+        scale = 1.0f;
+    }
+    else
+    {
+        alpha = (float)FINAL_ALPHA;
+        scale = FINAL_SCALE;
+    }
+
+    const sf::Texture& blackTex = ResourceManager::getInstance().getTexture(GlobalSetting::getInstance().getStoneTextureKey(true, m_boardSize));
+    const sf::Texture& whiteTex = ResourceManager::getInstance().getTexture(GlobalSetting::getInstance().getStoneTextureKey(false, m_boardSize));
+
+    sf::Uint8 finalAlphaUint = static_cast<sf::Uint8>(alpha);
+
+    for(const auto& stone : m_deadStones)
+    {
+        sf::Sprite s;
+        s.setTexture(stone.owner == TerritoryOwner::Black ? blackTex : whiteTex);
+
+        float px = m_boardTopLeft.x + stone.pos.x * m_cellSize;
+        float py = m_boardTopLeft.y + stone.pos.y * m_cellSize;
+
+        sf::FloatRect b = s.getLocalBounds();
+        s.setOrigin(b.width / 2.f, b.height / 2.f);
+        s.setPosition(px, py);
+
+        s.setScale(scale, scale);
+
+        s.setColor(sf::Color(255, 255, 255, finalAlphaUint));
+
+        target.draw(s);
+    }
+}
+
+}

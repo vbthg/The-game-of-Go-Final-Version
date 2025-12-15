@@ -1,3 +1,4 @@
+// include/Stepper.h
 #pragma once
 
 #include <SFML/Graphics.hpp>
@@ -12,7 +13,6 @@ namespace UI
 class Stepper
 {
 public:
-
     Stepper(sf::Vector2f minusBtnPos,
             float distance,
             const std::vector<std::string>& options,

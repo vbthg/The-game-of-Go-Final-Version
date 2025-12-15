@@ -4,7 +4,6 @@
 class IEffect
 {
 public:
-
     virtual ~IEffect() = default;
 
     virtual void update(float deltaTime) = 0;

@@ -25,7 +25,6 @@ private:
     void createUI();
     void createEffects();
 
-
     void onResumeClick();
     void onResetClick();
     void onSaveGameClick();
@@ -36,17 +35,14 @@ private:
     GameStateType m_requestedState;
     sf::Sprite m_backgroundSprite;
 
-
     sf::RenderTexture m_renderTexture;
     sf::Sprite m_renderSprite;
-
 
     UI::Button m_resumeBtn;
     UI::Button m_resetBtn;
     UI::Button m_saveGameBtn;
     UI::Button m_settingsBtn;
     UI::Button m_quitToMenuBtn;
-
 
     std::vector<UI::Button*> m_allButtons;
     std::vector<std::unique_ptr<IEffect>> m_persistentEffects;

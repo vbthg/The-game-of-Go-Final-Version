@@ -1,0 +1,1457 @@
+# depslib dependency file v1.0
+1761230324 source:d:\sfml_codeblocks\main.cpp
+	<SFML/Graphics.hpp>
+	<string>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\graphics.hpp
+	<SFML/Graphics/BlendMode.hpp>
+	<SFML/Graphics/CircleShape.hpp>
+	<SFML/Graphics/Color.hpp>
+	<SFML/Graphics/ConvexShape.hpp>
+	<SFML/Graphics/Drawable.hpp>
+	<SFML/Graphics/Font.hpp>
+	<SFML/Graphics/Glyph.hpp>
+	<SFML/Graphics/Image.hpp>
+	<SFML/Graphics/PrimitiveType.hpp>
+	<SFML/Graphics/Rect.hpp>
+	<SFML/Graphics/RectangleShape.hpp>
+	<SFML/Graphics/RenderStates.hpp>
+	<SFML/Graphics/RenderTarget.hpp>
+	<SFML/Graphics/RenderTexture.hpp>
+	<SFML/Graphics/RenderWindow.hpp>
+	<SFML/Graphics/Shader.hpp>
+	<SFML/Graphics/Shape.hpp>
+	<SFML/Graphics/Sprite.hpp>
+	<SFML/Graphics/StencilMode.hpp>
+	<SFML/Graphics/Text.hpp>
+	<SFML/Graphics/Texture.hpp>
+	<SFML/Graphics/Transform.hpp>
+	<SFML/Graphics/Transformable.hpp>
+	<SFML/Graphics/Vertex.hpp>
+	<SFML/Graphics/VertexArray.hpp>
+	<SFML/Graphics/VertexBuffer.hpp>
+	<SFML/Graphics/View.hpp>
+	<SFML/Window.hpp>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\graphics\blendmode.hpp
+	<SFML/Graphics/Export.hpp>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\graphics\export.hpp
+	<SFML/Config.hpp>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\config.hpp
+	"TargetConditionals.h"
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\graphics\circleshape.hpp
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/Shape.hpp>
+	<SFML/System/Vector2.hpp>
+	<cstddef>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\graphics\shape.hpp
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/Color.hpp>
+	<SFML/Graphics/Drawable.hpp>
+	<SFML/Graphics/PrimitiveType.hpp>
+	<SFML/Graphics/Rect.hpp>
+	<SFML/Graphics/RenderStates.hpp>
+	<SFML/Graphics/Transformable.hpp>
+	<SFML/Graphics/VertexArray.hpp>
+	<SFML/System/Vector2.hpp>
+	<cstddef>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\graphics\color.hpp
+	<cstdint>
+	<SFML/Graphics/Color.inl>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\graphics\color.inl
+	<SFML/Graphics/Color.hpp>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\graphics\drawable.hpp
+	<SFML/Graphics/Export.hpp>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\graphics\primitivetype.hpp
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\graphics\rect.hpp
+	<SFML/System/Vector2.hpp>
+	<optional>
+	<SFML/Graphics/Rect.inl>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\system\vector2.hpp
+	<SFML/System/Export.hpp>
+	<SFML/System/Angle.hpp>
+	<SFML/System/Vector2.inl>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\system\export.hpp
+	<SFML/Config.hpp>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\system\angle.hpp
+	<SFML/System/Angle.inl>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\system\angle.inl
+	<SFML/System/Angle.hpp>
+	<cassert>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\system\vector2.inl
+	<SFML/System/Vector2.hpp>
+	<cassert>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\graphics\rect.inl
+	<SFML/Graphics/Rect.hpp>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\graphics\renderstates.hpp
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/BlendMode.hpp>
+	<SFML/Graphics/CoordinateType.hpp>
+	<SFML/Graphics/StencilMode.hpp>
+	<SFML/Graphics/Transform.hpp>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\graphics\coordinatetype.hpp
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\graphics\stencilmode.hpp
+	<SFML/Graphics/Export.hpp>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\graphics\transform.hpp
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/Rect.hpp>
+	<SFML/System/Vector2.hpp>
+	<array>
+	<SFML/Graphics/Transform.inl>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\graphics\transform.inl
+	<SFML/Graphics/Transform.hpp>
+	<array>
+	<cstddef>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\graphics\transformable.hpp
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/Transform.hpp>
+	<SFML/System/Angle.hpp>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\graphics\vertexarray.hpp
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/Drawable.hpp>
+	<SFML/Graphics/PrimitiveType.hpp>
+	<SFML/Graphics/Rect.hpp>
+	<SFML/Graphics/RenderStates.hpp>
+	<SFML/Graphics/Vertex.hpp>
+	<vector>
+	<cstddef>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\graphics\vertex.hpp
+	<SFML/Graphics/Color.hpp>
+	<SFML/System/Vector2.hpp>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\graphics\convexshape.hpp
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/Shape.hpp>
+	<vector>
+	<cstddef>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\graphics\font.hpp
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/Glyph.hpp>
+	<SFML/Graphics/Rect.hpp>
+	<SFML/Graphics/Texture.hpp>
+	<SFML/System/Vector2.hpp>
+	<filesystem>
+	<memory>
+	<string>
+	<string_view>
+	<unordered_map>
+	<vector>
+	<cstddef>
+	<cstdint>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\graphics\glyph.hpp
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/Rect.hpp>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\graphics\texture.hpp
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/CoordinateType.hpp>
+	<SFML/Graphics/Rect.hpp>
+	<SFML/Window/GlResource.hpp>
+	<SFML/System/Vector2.hpp>
+	<filesystem>
+	<cstddef>
+	<cstdint>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\window\glresource.hpp
+	<SFML/Window/Export.hpp>
+	<memory>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\window\export.hpp
+	<SFML/Config.hpp>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\graphics\image.hpp
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/Color.hpp>
+	<SFML/Graphics/Rect.hpp>
+	<SFML/System/Vector2.hpp>
+	<filesystem>
+	<optional>
+	<string_view>
+	<vector>
+	<cstddef>
+	<cstdint>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\graphics\rectangleshape.hpp
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/Shape.hpp>
+	<SFML/System/Vector2.hpp>
+	<cstddef>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\graphics\rendertarget.hpp
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/BlendMode.hpp>
+	<SFML/Graphics/Color.hpp>
+	<SFML/Graphics/CoordinateType.hpp>
+	<SFML/Graphics/PrimitiveType.hpp>
+	<SFML/Graphics/Rect.hpp>
+	<SFML/Graphics/RenderStates.hpp>
+	<SFML/Graphics/StencilMode.hpp>
+	<SFML/Graphics/Vertex.hpp>
+	<SFML/Graphics/View.hpp>
+	<SFML/System/Vector2.hpp>
+	<array>
+	<cstddef>
+	<cstdint>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\graphics\view.hpp
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/Rect.hpp>
+	<SFML/Graphics/Transform.hpp>
+	<SFML/System/Angle.hpp>
+	<SFML/System/Vector2.hpp>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\graphics\rendertexture.hpp
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/RenderTarget.hpp>
+	<SFML/Graphics/Texture.hpp>
+	<SFML/Window/ContextSettings.hpp>
+	<SFML/System/Vector2.hpp>
+	<memory>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\window\contextsettings.hpp
+	<SFML/Config.hpp>
+	<cstdint>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\graphics\renderwindow.hpp
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/RenderTarget.hpp>
+	<SFML/Window/ContextSettings.hpp>
+	<SFML/Window/VideoMode.hpp>
+	<SFML/Window/Window.hpp>
+	<SFML/Window/WindowEnums.hpp>
+	<SFML/Window/WindowHandle.hpp>
+	<SFML/System/Vector2.hpp>
+	<cstdint>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\window\videomode.hpp
+	<SFML/Window/Export.hpp>
+	<SFML/System/Vector2.hpp>
+	<vector>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\window\window.hpp
+	<SFML/Window/ContextSettings.hpp>
+	<SFML/Window/GlResource.hpp>
+	<SFML/Window/WindowBase.hpp>
+	<SFML/Window/WindowEnums.hpp>
+	<SFML/Window/WindowHandle.hpp>
+	<SFML/System/Clock.hpp>
+	<SFML/System/Time.hpp>
+	<memory>
+	<cstdint>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\window\windowbase.hpp
+	<SFML/Window/Export.hpp>
+	<SFML/Window/Vulkan.hpp>
+	<SFML/Window/WindowEnums.hpp>
+	<SFML/Window/WindowHandle.hpp>
+	<SFML/System/Time.hpp>
+	<SFML/System/Vector2.hpp>
+	<memory>
+	<optional>
+	<cstdint>
+	<SFML/Window/WindowBase.inl>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\window\vulkan.hpp
+	<SFML/Window/Export.hpp>
+	<vector>
+	<cstdint>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\window\windowenums.hpp
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\window\windowhandle.hpp
+	<SFML/Config.hpp>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\system\time.hpp
+	<chrono>
+	<cstdint>
+	<SFML/System/Time.inl>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\system\time.inl
+	<SFML/System/Time.hpp>
+	<ratio>
+	<cassert>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\window\windowbase.inl
+	<SFML/Window/Event.hpp>
+	<SFML/Window/WindowBase.hpp>
+	<type_traits>
+	<utility>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\window\event.hpp
+	<SFML/Window/Joystick.hpp>
+	<SFML/Window/Keyboard.hpp>
+	<SFML/Window/Mouse.hpp>
+	<SFML/Window/Sensor.hpp>
+	<SFML/System/Vector2.hpp>
+	<type_traits>
+	<variant>
+	<SFML/Window/Event.inl>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\window\joystick.hpp
+	<SFML/Window/Export.hpp>
+	<SFML/System/String.hpp>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\system\string.hpp
+	<SFML/System/Export.hpp>
+	<SFML/System/Utf.hpp>
+	<locale>
+	<string>
+	<cstddef>
+	<cstdint>
+	<SFML/System/String.inl>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\system\utf.hpp
+	<SFML/Config.hpp>
+	<array>
+	<locale>
+	<cstdint>
+	<cstdlib>
+	<SFML/System/Utf.inl>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\system\utf.inl
+	<SFML/System/Utf.hpp>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\system\string.inl
+	<SFML/System/String.hpp>
+	<iterator>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\window\keyboard.hpp
+	<SFML/Window/Export.hpp>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\window\mouse.hpp
+	<SFML/Window/Export.hpp>
+	<SFML/System/Vector2.hpp>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\window\sensor.hpp
+	<SFML/Window/Export.hpp>
+	<SFML/System/Vector3.hpp>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\system\vector3.hpp
+	<SFML/System/Export.hpp>
+	<SFML/System/Vector3.inl>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\system\vector3.inl
+	<SFML/System/Vector3.hpp>
+	<cassert>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\window\event.inl
+	<SFML/Window/Event.hpp>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\system\clock.hpp
+	<SFML/System/Export.hpp>
+	<chrono>
+	<ratio>
+	<type_traits>
+	<SFML/System/SuspendAwareClock.hpp>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\system\suspendawareclock.hpp
+	<SFML/System/Export.hpp>
+	<chrono>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\graphics\shader.hpp
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/Glsl.hpp>
+	<SFML/Window/GlResource.hpp>
+	<filesystem>
+	<string>
+	<string_view>
+	<unordered_map>
+	<cstddef>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\graphics\glsl.hpp
+	<SFML/System/Vector2.hpp>
+	<SFML/System/Vector3.hpp>
+	<cstddef>
+	<SFML/Graphics/Glsl.inl>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\graphics\glsl.inl
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/Color.hpp>
+	<SFML/Graphics/Glsl.hpp>
+	<array>
+	<cstddef>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\graphics\sprite.hpp
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/Drawable.hpp>
+	<SFML/Graphics/Rect.hpp>
+	<SFML/Graphics/RenderStates.hpp>
+	<SFML/Graphics/Transformable.hpp>
+	<SFML/Graphics/Vertex.hpp>
+	<array>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\graphics\text.hpp
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/Color.hpp>
+	<SFML/Graphics/Drawable.hpp>
+	<SFML/Graphics/PrimitiveType.hpp>
+	<SFML/Graphics/Rect.hpp>
+	<SFML/Graphics/RenderStates.hpp>
+	<SFML/Graphics/Transformable.hpp>
+	<SFML/Graphics/VertexArray.hpp>
+	<SFML/System/String.hpp>
+	<SFML/System/Vector2.hpp>
+	<cstddef>
+	<cstdint>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\graphics\vertexbuffer.hpp
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/Drawable.hpp>
+	<SFML/Graphics/PrimitiveType.hpp>
+	<SFML/Graphics/RenderStates.hpp>
+	<SFML/Window/GlResource.hpp>
+	<cstddef>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\window.hpp
+	<SFML/Window/Clipboard.hpp>
+	<SFML/Window/Context.hpp>
+	<SFML/Window/ContextSettings.hpp>
+	<SFML/Window/Cursor.hpp>
+	<SFML/Window/Event.hpp>
+	<SFML/Window/Joystick.hpp>
+	<SFML/Window/Keyboard.hpp>
+	<SFML/Window/Mouse.hpp>
+	<SFML/Window/Sensor.hpp>
+	<SFML/Window/Touch.hpp>
+	<SFML/Window/VideoMode.hpp>
+	<SFML/Window/Window.hpp>
+	<SFML/Window/WindowEnums.hpp>
+	<SFML/Window/WindowHandle.hpp>
+	<SFML/System.hpp>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\window\clipboard.hpp
+	<SFML/Window/Export.hpp>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\window\context.hpp
+	<SFML/Window/Export.hpp>
+	<SFML/Window/GlResource.hpp>
+	<SFML/System/Vector2.hpp>
+	<memory>
+	<string_view>
+	<cstdint>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\window\cursor.hpp
+	<SFML/Window/Export.hpp>
+	<SFML/System/Vector2.hpp>
+	<memory>
+	<optional>
+	<cstdint>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\window\touch.hpp
+	<SFML/Window/Export.hpp>
+	<SFML/System/Vector2.hpp>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\system.hpp
+	<SFML/Config.hpp>
+	<SFML/System/Angle.hpp>
+	<SFML/System/Clock.hpp>
+	<SFML/System/Err.hpp>
+	<SFML/System/Exception.hpp>
+	<SFML/System/FileInputStream.hpp>
+	<SFML/System/InputStream.hpp>
+	<SFML/System/MemoryInputStream.hpp>
+	<SFML/System/Sleep.hpp>
+	<SFML/System/String.hpp>
+	<SFML/System/Time.hpp>
+	<SFML/System/Utf.hpp>
+	<SFML/System/Vector2.hpp>
+	<SFML/System/Vector3.hpp>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\system\err.hpp
+	<SFML/System/Export.hpp>
+	<iosfwd>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\system\exception.hpp
+	<SFML/System/Export.hpp>
+	<stdexcept>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\system\fileinputstream.hpp
+	<SFML/Config.hpp>
+	<SFML/System/Export.hpp>
+	<SFML/System/InputStream.hpp>
+	<filesystem>
+	<memory>
+	<cstdint>
+	<cstdio>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\system\inputstream.hpp
+	<SFML/Config.hpp>
+	<SFML/System/Export.hpp>
+	<optional>
+	<cstdint>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\system\memoryinputstream.hpp
+	<SFML/Config.hpp>
+	<SFML/System/Export.hpp>
+	<SFML/System/InputStream.hpp>
+	<cstddef>
+	<cstdint>
+
+1758144516 c:\users\lenovo\documents\libraries\sfml-3.0.2\include\sfml\system\sleep.hpp
+	<SFML/System/Export.hpp>
+
+1761058563 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\graphics.hpp
+	<SFML/Window.hpp>
+	<SFML/Graphics/BlendMode.hpp>
+	<SFML/Graphics/CircleShape.hpp>
+	<SFML/Graphics/Color.hpp>
+	<SFML/Graphics/ConvexShape.hpp>
+	<SFML/Graphics/Drawable.hpp>
+	<SFML/Graphics/Font.hpp>
+	<SFML/Graphics/Glyph.hpp>
+	<SFML/Graphics/Image.hpp>
+	<SFML/Graphics/PrimitiveType.hpp>
+	<SFML/Graphics/Rect.hpp>
+	<SFML/Graphics/RectangleShape.hpp>
+	<SFML/Graphics/RenderStates.hpp>
+	<SFML/Graphics/RenderTarget.hpp>
+	<SFML/Graphics/RenderTexture.hpp>
+	<SFML/Graphics/RenderWindow.hpp>
+	<SFML/Graphics/Shader.hpp>
+	<SFML/Graphics/Shape.hpp>
+	<SFML/Graphics/Sprite.hpp>
+	<SFML/Graphics/Text.hpp>
+	<SFML/Graphics/Texture.hpp>
+	<SFML/Graphics/Transform.hpp>
+	<SFML/Graphics/Transformable.hpp>
+	<SFML/Graphics/Vertex.hpp>
+	<SFML/Graphics/VertexArray.hpp>
+	<SFML/Graphics/VertexBuffer.hpp>
+	<SFML/Graphics/View.hpp>
+
+1761058563 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\window.hpp
+	<SFML/System.hpp>
+	<SFML/Window/Clipboard.hpp>
+	<SFML/Window/Context.hpp>
+	<SFML/Window/ContextSettings.hpp>
+	<SFML/Window/Cursor.hpp>
+	<SFML/Window/Event.hpp>
+	<SFML/Window/Joystick.hpp>
+	<SFML/Window/Keyboard.hpp>
+	<SFML/Window/Mouse.hpp>
+	<SFML/Window/Sensor.hpp>
+	<SFML/Window/Touch.hpp>
+	<SFML/Window/VideoMode.hpp>
+	<SFML/Window/Window.hpp>
+	<SFML/Window/WindowHandle.hpp>
+	<SFML/Window/WindowStyle.hpp>
+
+1761058563 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\system.hpp
+	<SFML/Config.hpp>
+	<SFML/System/Clock.hpp>
+	<SFML/System/Err.hpp>
+	<SFML/System/FileInputStream.hpp>
+	<SFML/System/InputStream.hpp>
+	<SFML/System/Lock.hpp>
+	<SFML/System/MemoryInputStream.hpp>
+	<SFML/System/Mutex.hpp>
+	<SFML/System/NonCopyable.hpp>
+	<SFML/System/Sleep.hpp>
+	<SFML/System/String.hpp>
+	<SFML/System/Thread.hpp>
+	<SFML/System/ThreadLocal.hpp>
+	<SFML/System/ThreadLocalPtr.hpp>
+	<SFML/System/Time.hpp>
+	<SFML/System/Utf.hpp>
+	<SFML/System/Vector2.hpp>
+	<SFML/System/Vector3.hpp>
+
+1761058563 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\config.hpp
+	"TargetConditionals.h"
+
+1761058564 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\system\clock.hpp
+	<SFML/System/Export.hpp>
+	<SFML/System/Time.hpp>
+
+1761058564 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\system\export.hpp
+	<SFML/Config.hpp>
+
+1761058564 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\system\time.hpp
+	<SFML/System/Export.hpp>
+
+1761058564 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\system\err.hpp
+	<SFML/System/Export.hpp>
+	<ostream>
+
+1761058564 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\system\fileinputstream.hpp
+	<SFML/Config.hpp>
+	<SFML/System/Export.hpp>
+	<SFML/System/InputStream.hpp>
+	<SFML/System/NonCopyable.hpp>
+	<cstdio>
+	<string>
+
+1761058564 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\system\inputstream.hpp
+	<SFML/Config.hpp>
+	<SFML/System/Export.hpp>
+
+1761058564 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\system\noncopyable.hpp
+	<SFML/System/Export.hpp>
+
+1761058564 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\system\lock.hpp
+	<SFML/System/Export.hpp>
+	<SFML/System/NonCopyable.hpp>
+
+1761058564 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\system\memoryinputstream.hpp
+	<SFML/Config.hpp>
+	<SFML/System/InputStream.hpp>
+	<SFML/System/Export.hpp>
+	<cstdlib>
+
+1761058564 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\system\mutex.hpp
+	<SFML/System/Export.hpp>
+	<SFML/System/NonCopyable.hpp>
+
+1761058564 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\system\sleep.hpp
+	<SFML/System/Export.hpp>
+	<SFML/System/Time.hpp>
+
+1761058564 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\system\string.hpp
+	<SFML/System/Export.hpp>
+	<SFML/System/Utf.hpp>
+	<iterator>
+	<locale>
+	<string>
+	<SFML/System/String.inl>
+
+1761058564 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\system\utf.hpp
+	<SFML/Config.hpp>
+	<algorithm>
+	<locale>
+	<string>
+	<cstdlib>
+	<SFML/System/Utf.inl>
+
+1761058564 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\system\utf.inl
+
+1761058564 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\system\string.inl
+
+1761058564 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\system\thread.hpp
+	<SFML/System/Export.hpp>
+	<SFML/System/NonCopyable.hpp>
+	<cstdlib>
+	<SFML/System/Thread.inl>
+
+1761058564 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\system\thread.inl
+
+1761058564 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\system\threadlocal.hpp
+	<SFML/System/Export.hpp>
+	<SFML/System/NonCopyable.hpp>
+	<cstdlib>
+
+1761058564 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\system\threadlocalptr.hpp
+	<SFML/System/ThreadLocal.hpp>
+	<SFML/System/ThreadLocalPtr.inl>
+
+1761058564 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\system\threadlocalptr.inl
+
+1761058564 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\system\vector2.hpp
+	<SFML/System/Vector2.inl>
+
+1761058564 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\system\vector2.inl
+
+1761058564 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\system\vector3.hpp
+	<SFML/System/Vector3.inl>
+
+1761058564 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\system\vector3.inl
+
+1761058564 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\window\clipboard.hpp
+	<SFML/Window/Export.hpp>
+	<SFML/System/String.hpp>
+
+1761058564 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\window\export.hpp
+	<SFML/Config.hpp>
+
+1761058564 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\window\context.hpp
+	<SFML/Window/Export.hpp>
+	<SFML/Window/GlResource.hpp>
+	<SFML/Window/ContextSettings.hpp>
+	<SFML/System/NonCopyable.hpp>
+
+1761058564 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\window\glresource.hpp
+	<SFML/Window/Export.hpp>
+	<SFML/System/NonCopyable.hpp>
+
+1761058564 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\window\contextsettings.hpp
+	<SFML/Config.hpp>
+
+1761058564 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\window\cursor.hpp
+	<SFML/Window/Export.hpp>
+	<SFML/System/NonCopyable.hpp>
+	<SFML/System/Vector2.hpp>
+
+1761058564 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\window\event.hpp
+	<SFML/Config.hpp>
+	<SFML/Window/Joystick.hpp>
+	<SFML/Window/Keyboard.hpp>
+	<SFML/Window/Mouse.hpp>
+	<SFML/Window/Sensor.hpp>
+
+1761058564 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\window\joystick.hpp
+	<SFML/Window/Export.hpp>
+	<SFML/System/String.hpp>
+
+1761058564 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\window\keyboard.hpp
+	<SFML/Window/Export.hpp>
+
+1761058564 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\window\mouse.hpp
+	<SFML/Window/Export.hpp>
+	<SFML/System/Vector2.hpp>
+
+1761058564 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\window\sensor.hpp
+	<SFML/Window/Export.hpp>
+	<SFML/System/Vector3.hpp>
+	<SFML/System/Time.hpp>
+
+1761058564 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\window\touch.hpp
+	<SFML/Window/Export.hpp>
+	<SFML/System/Vector2.hpp>
+
+1761058564 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\window\videomode.hpp
+	<SFML/Window/Export.hpp>
+	<vector>
+
+1761058564 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\window\window.hpp
+	<SFML/Window/ContextSettings.hpp>
+	<SFML/Window/GlResource.hpp>
+	<SFML/Window/WindowBase.hpp>
+
+1761058564 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\window\windowbase.hpp
+	<SFML/Window/Cursor.hpp>
+	<SFML/Window/Export.hpp>
+	<SFML/Window/VideoMode.hpp>
+	<SFML/Window/Vulkan.hpp>
+	<SFML/Window/WindowHandle.hpp>
+	<SFML/Window/WindowStyle.hpp>
+	<SFML/System/Clock.hpp>
+	<SFML/System/NonCopyable.hpp>
+	<SFML/System/String.hpp>
+	<SFML/System/Vector2.hpp>
+
+1761058564 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\window\vulkan.hpp
+	<SFML/Window/Export.hpp>
+	<SFML/Window/WindowHandle.hpp>
+	<vector>
+	<cstddef>
+	<stdint.h>
+
+1761058564 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\window\windowhandle.hpp
+	<SFML/Config.hpp>
+
+1761058564 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\window\windowstyle.hpp
+
+1761058563 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\graphics\blendmode.hpp
+	<SFML/Graphics/Export.hpp>
+
+1761058563 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\graphics\export.hpp
+	<SFML/Config.hpp>
+
+1761058563 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\graphics\circleshape.hpp
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/Shape.hpp>
+
+1761058563 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\graphics\shape.hpp
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/Drawable.hpp>
+	<SFML/Graphics/Transformable.hpp>
+	<SFML/Graphics/VertexArray.hpp>
+	<SFML/System/Vector2.hpp>
+
+1761058563 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\graphics\drawable.hpp
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/RenderStates.hpp>
+
+1761058563 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\graphics\renderstates.hpp
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/BlendMode.hpp>
+	<SFML/Graphics/Transform.hpp>
+
+1761058563 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\graphics\transform.hpp
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/Rect.hpp>
+	<SFML/System/Vector2.hpp>
+
+1761058563 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\graphics\rect.hpp
+	<SFML/System/Vector2.hpp>
+	<algorithm>
+	<SFML/Graphics/Rect.inl>
+
+1761058563 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\graphics\rect.inl
+
+1761058563 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\graphics\transformable.hpp
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/Transform.hpp>
+
+1761058563 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\graphics\vertexarray.hpp
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/Vertex.hpp>
+	<SFML/Graphics/PrimitiveType.hpp>
+	<SFML/Graphics/Rect.hpp>
+	<SFML/Graphics/Drawable.hpp>
+	<vector>
+
+1761058563 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\graphics\vertex.hpp
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/Color.hpp>
+	<SFML/System/Vector2.hpp>
+
+1761058563 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\graphics\color.hpp
+	<SFML/Graphics/Export.hpp>
+
+1761058563 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\graphics\primitivetype.hpp
+
+1761058563 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\graphics\convexshape.hpp
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/Shape.hpp>
+	<vector>
+
+1761058563 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\graphics\font.hpp
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/Glyph.hpp>
+	<SFML/Graphics/Texture.hpp>
+	<SFML/Graphics/Rect.hpp>
+	<map>
+	<string>
+	<vector>
+
+1761058563 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\graphics\glyph.hpp
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/Rect.hpp>
+
+1761058563 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\graphics\texture.hpp
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/Image.hpp>
+	<SFML/Window/GlResource.hpp>
+
+1761058563 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\graphics\image.hpp
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/Color.hpp>
+	<SFML/Graphics/Rect.hpp>
+	<string>
+	<vector>
+
+1761058563 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\graphics\rectangleshape.hpp
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/Shape.hpp>
+
+1761058563 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\graphics\rendertarget.hpp
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/Color.hpp>
+	<SFML/Graphics/Rect.hpp>
+	<SFML/Graphics/View.hpp>
+	<SFML/Graphics/Transform.hpp>
+	<SFML/Graphics/BlendMode.hpp>
+	<SFML/Graphics/RenderStates.hpp>
+	<SFML/Graphics/PrimitiveType.hpp>
+	<SFML/Graphics/Vertex.hpp>
+	<SFML/System/NonCopyable.hpp>
+
+1761058563 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\graphics\view.hpp
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/Rect.hpp>
+	<SFML/Graphics/Transform.hpp>
+	<SFML/System/Vector2.hpp>
+
+1761058563 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\graphics\rendertexture.hpp
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/Texture.hpp>
+	<SFML/Graphics/RenderTarget.hpp>
+	<SFML/Window/ContextSettings.hpp>
+
+1761058563 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\graphics\renderwindow.hpp
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/RenderTarget.hpp>
+	<SFML/Graphics/Image.hpp>
+	<SFML/Window/Window.hpp>
+	<string>
+
+1761058563 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\graphics\shader.hpp
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/Glsl.hpp>
+	<SFML/Window/GlResource.hpp>
+	<SFML/System/NonCopyable.hpp>
+	<SFML/System/Vector2.hpp>
+	<SFML/System/Vector3.hpp>
+	<map>
+	<string>
+
+1761058563 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\graphics\glsl.hpp
+	<SFML/Graphics/Transform.hpp>
+	<SFML/Graphics/Color.hpp>
+	<SFML/System/Vector2.hpp>
+	<SFML/System/Vector3.hpp>
+	<SFML/Graphics/Glsl.inl>
+
+1761058563 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\graphics\glsl.inl
+
+1761058563 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\graphics\sprite.hpp
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/Drawable.hpp>
+	<SFML/Graphics/Transformable.hpp>
+	<SFML/Graphics/Vertex.hpp>
+	<SFML/Graphics/Rect.hpp>
+
+1761058563 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\graphics\text.hpp
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/Drawable.hpp>
+	<SFML/Graphics/Transformable.hpp>
+	<SFML/Graphics/Font.hpp>
+	<SFML/Graphics/Rect.hpp>
+	<SFML/Graphics/VertexArray.hpp>
+	<SFML/System/String.hpp>
+	<string>
+	<vector>
+
+1761058563 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\graphics\vertexbuffer.hpp
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/PrimitiveType.hpp>
+	<SFML/Graphics/Drawable.hpp>
+	<SFML/Window/GlResource.hpp>
+
+1761058563 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\audio.hpp
+	<SFML/System.hpp>
+	<SFML/Audio/InputSoundFile.hpp>
+	<SFML/Audio/Listener.hpp>
+	<SFML/Audio/Music.hpp>
+	<SFML/Audio/OutputSoundFile.hpp>
+	<SFML/Audio/Sound.hpp>
+	<SFML/Audio/SoundBuffer.hpp>
+	<SFML/Audio/SoundBufferRecorder.hpp>
+	<SFML/Audio/SoundFileFactory.hpp>
+	<SFML/Audio/SoundFileReader.hpp>
+	<SFML/Audio/SoundFileWriter.hpp>
+	<SFML/Audio/SoundRecorder.hpp>
+	<SFML/Audio/SoundSource.hpp>
+	<SFML/Audio/SoundStream.hpp>
+
+1761058563 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\audio\inputsoundfile.hpp
+	<SFML/Audio/Export.hpp>
+	<SFML/System/NonCopyable.hpp>
+	<SFML/System/Time.hpp>
+	<string>
+	<cstddef>
+
+1761058563 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\audio\export.hpp
+	<SFML/Config.hpp>
+
+1761058563 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\audio\listener.hpp
+	<SFML/Audio/Export.hpp>
+	<SFML/System/Vector3.hpp>
+
+1761058563 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\audio\music.hpp
+	<SFML/Audio/Export.hpp>
+	<SFML/Audio/SoundStream.hpp>
+	<SFML/Audio/InputSoundFile.hpp>
+	<SFML/System/Mutex.hpp>
+	<SFML/System/Time.hpp>
+	<string>
+	<vector>
+
+1761058563 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\audio\soundstream.hpp
+	<SFML/Audio/Export.hpp>
+	<SFML/Audio/SoundSource.hpp>
+	<SFML/System/Thread.hpp>
+	<SFML/System/Time.hpp>
+	<SFML/System/Mutex.hpp>
+	<cstdlib>
+
+1761058563 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\audio\soundsource.hpp
+	<SFML/Audio/Export.hpp>
+	<SFML/Audio/AlResource.hpp>
+	<SFML/System/Vector3.hpp>
+
+1761058563 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\audio\alresource.hpp
+	<SFML/Audio/Export.hpp>
+
+1761058563 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\audio\outputsoundfile.hpp
+	<SFML/Audio/Export.hpp>
+	<SFML/System/NonCopyable.hpp>
+	<string>
+
+1761058563 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\audio\sound.hpp
+	<SFML/Audio/Export.hpp>
+	<SFML/Audio/SoundSource.hpp>
+	<SFML/System/Time.hpp>
+	<cstdlib>
+
+1761058563 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\audio\soundbuffer.hpp
+	<SFML/Audio/Export.hpp>
+	<SFML/Audio/AlResource.hpp>
+	<SFML/System/Time.hpp>
+	<string>
+	<vector>
+	<set>
+
+1761058563 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\audio\soundbufferrecorder.hpp
+	<SFML/Audio/Export.hpp>
+	<SFML/Audio/SoundBuffer.hpp>
+	<SFML/Audio/SoundRecorder.hpp>
+	<vector>
+
+1761058563 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\audio\soundrecorder.hpp
+	<SFML/Audio/Export.hpp>
+	<SFML/Audio/AlResource.hpp>
+	<SFML/System/Thread.hpp>
+	<SFML/System/Time.hpp>
+	<vector>
+	<string>
+
+1761058563 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\audio\soundfilefactory.hpp
+	<SFML/Audio/Export.hpp>
+	<string>
+	<vector>
+	<SFML/Audio/SoundFileFactory.inl>
+
+1761058563 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\audio\soundfilefactory.inl
+
+1761058563 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\audio\soundfilereader.hpp
+	<SFML/Audio/Export.hpp>
+	<string>
+
+1761058563 c:\users\lenovo\documents\libraries\sfml-2.6.1\include\sfml\audio\soundfilewriter.hpp
+	<SFML/Audio/Export.hpp>
+	<string>
+
+1765693988 source:d:\sfml_codeblocks\src\main.cpp
+	"Game.h"
+	"ResourceManager.h"
+	"BotManager.h"
+	"GlobalSetting.h"
+	<ctime>
+	<cstdlib>
+	<iostream>
+	<windows.h>
+
+1765711989 source:d:\sfml_codeblocks\src\ui\button.cpp
+	<SFML/Graphics.hpp>
+	<functional>
+	<string>
+	<cmath>
+	"Button.h"
+	<iostream>
+
+1765716397 d:\sfml_codeblocks\include\ui\button.h
+	<SFML/Graphics.hpp>
+	<functional>
+	<string>
+
+1765714248 source:d:\sfml_codeblocks\src\ui\slideeffect.cpp
+	"SlideEffect.h"
+	<SFML/Graphics.hpp>
+	<cmath>
+
+1765716198 d:\sfml_codeblocks\include\ui\slideeffect.h
+	<SFML/Graphics.hpp>
+	"IEffect.h"
+
+1765715814 d:\sfml_codeblocks\include\ui\ieffect.h
+
+1761489390 source:d:\sfml_codeblocks\src\ui\groweffect.cpp
+	<SFML/Graphics.hpp>
+	"Button.h"
+	"GrowEffect.h"
+	<functional>
+	<string>
+	<cmath>
+	<algorithm>
+
+1761483037 d:\sfml_codeblocks\include\ui\groweffect.h
+	<SFML/Graphics.hpp>
+	"IEffect.h"
+	"Button.h"
+	<cmath>
+
+1765713906 source:d:\sfml_codeblocks\src\ui\scaleeffect.cpp
+	"ScaleEffect.h"
+	<SFML/Graphics.hpp>
+	<functional>
+	<string>
+	<cmath>
+	<algorithm>
+	<iostream>
+
+1765715971 d:\sfml_codeblocks\include\ui\scaleeffect.h
+	<SFML/Graphics.hpp>
+	"IEffect.h"
+	<cmath>
+
+1765712445 source:d:\sfml_codeblocks\src\ui\mainmenu.cpp
+	"MainMenu.h"
+	"ResourceManager.h"
+	"ScaleEffect.h"
+	<memory>
+	<algorithm>
+	<functional>
+
+1765715850 d:\sfml_codeblocks\include\ui\mainmenu.h
+	<SFML/Graphics.hpp>
+	<vector>
+	<memory>
+	"GameState.h"
+	"Button.h"
+	"IEffect.h"
+	"ResourceManager.h"
+
+1765713684 source:d:\sfml_codeblocks\src\gamecore\game.cpp
+	"Game.h"
+	"MainMenu.h"
+	"NewGame.h"
+	"SizeSelection.h"
+	"GamePlay.h"
+	"Setting.h"
+	"About.h"
+	"Pause.h"
+	"GlobalSetting.h"
+	"SavedGame.h"
+	<filesystem>
+
+1761900534 source:d:\sfml_codeblocks\src\gamecore\gamestate.cpp
+
+1765711827 source:d:\sfml_codeblocks\src\gamecore\resourcemanager.cpp
+	"ResourceManager.h"
+	<iostream>
+	<cassert>
+
+1763909605 d:\sfml_codeblocks\include\manager\resourcemanager.h
+	<map>
+	<string>
+	<memory>
+	<SFML/Graphics.hpp>
+	<SFML/Audio.hpp>
+	<SFML/Window/Cursor.hpp>
+
+1765711916 source:d:\sfml_codeblocks\src\ui\about.cpp
+	"About.h"
+	<iostream>
+
+1765714428 source:d:\sfml_codeblocks\src\ui\timeline.cpp
+	"Timeline.h"
+	<cmath>
+	<algorithm>
+	<iostream>
+	<iomanip>
+	<sstream>
+
+1765716269 d:\sfml_codeblocks\include\ui\timeline.h
+	<SFML/Graphics.hpp>
+	<string>
+	<deque>
+	<vector>
+
+1763729452 source:d:\sfml_codeblocks\src\ui\boardbreatheffect.cpp
+	"BoardBreathEffect.h"
+	<cmath>
+
+1765716448 d:\sfml_codeblocks\include\ui\boardbreatheffect.h
+	<cmath>
+
+1765716952 d:\sfml_codeblocks\include\gamecore\gamestate.h
+	<SFML/Graphics.hpp>
+
+1765712495 source:d:\sfml_codeblocks\src\ui\newgame.cpp
+	"NewGame.h"
+	"ResourceManager.h"
+	"ScaleEffect.h"
+	<memory>
+	<algorithm>
+	<functional>
+	<iostream>
+
+1765715884 d:\sfml_codeblocks\include\ui\newgame.h
+	<SFML/Graphics.hpp>
+	<vector>
+	<memory>
+	"GameState.h"
+	"Button.h"
+	"IEffect.h"
+	"ResourceManager.h"
+
+1765712598 source:d:\sfml_codeblocks\src\ui\pause.cpp
+	"Pause.h"
+	"ResourceManager.h"
+	"ScaleEffect.h"
+	<memory>
+	<algorithm>
+	<iostream>
+
+1765716303 d:\sfml_codeblocks\include\ui\pause.h
+	<SFML/Graphics.hpp>
+	<memory>
+	<vector>
+	"GameState.h"
+	"Button.h"
+	"IEffect.h"
+	"ResourceManager.h"
+
+1765712655 source:d:\sfml_codeblocks\src\ui\radiobutton.cpp
+	"RadioButton.h"
+
+1765716299 d:\sfml_codeblocks\include\ui\radiobutton.h
+	<SFML/Graphics.hpp>
+	<vector>
+	<memory>
+	<functional>
+	"Button.h"
+
+1765714297 source:d:\sfml_codeblocks\src\ui\slider.cpp
+	"Slider.h"
+	<algorithm>
+	<cmath>
+	<iostream>
+
+1765716223 d:\sfml_codeblocks\include\ui\slider.h
+	"Button.h"
+	<SFML/Graphics.hpp>
+	<functional>
+
+1765711643 source:d:\sfml_codeblocks\src\gamecore\gamelogic.cpp
+	"GameLogic.h"
+	<vector>
+	<iostream>
+	<algorithm>
+	<fstream>
+	<queue>
+	<sstream>
+
+1765717007 d:\sfml_codeblocks\include\gamecore\gamelogic.h
+	<vector>
+	<string>
+	<stack>
+	<SFML/System/Vector2.hpp>
+	"SaveDefinition.h"
+
+1765716536 d:\sfml_codeblocks\include\gamecore\savedefinition.h
+	<string>
+
+1765714716 d:\sfml_codeblocks\include\gamecore\game.h
+	<SFML/Graphics.hpp>
+	<memory>
+	<string>
+	"GameState.h"
+
+1765720398 source:d:\sfml_codeblocks\src\ui\sizeselection.cpp
+	"SizeSelection.h"
+	"IEffect.h"
+	"ScaleEffect.h"
+	"SlideEffect.h"
+	"GlobalSetting.h"
+	<iostream>
+	<cmath>
+
+1765716157 d:\sfml_codeblocks\include\ui\sizeselection.h
+	"GameState.h"
+	"Button.h"
+	"ResourceManager.h"
+	"IEffect.h"
+	"SlideEffect.h"
+	"ScaleEffect.h"
+	<vector>
+	<memory>
+
+1765712383 source:d:\sfml_codeblocks\src\ui\historylist.cpp
+	"HistoryList.h"
+	<iostream>
+	<cmath>
+
+1765715788 d:\sfml_codeblocks\include\ui\historylist.h
+	<SFML/Graphics.hpp>
+	<string>
+	<vector>
+	<memory>
+	"Slider.h"
+
+1765714352 source:d:\sfml_codeblocks\src\ui\stepper.cpp
+	"Stepper.h"
+	"ResourceManager.h"
+	<algorithm>
+
+1765716242 d:\sfml_codeblocks\include\ui\stepper.h
+	<SFML/Graphics.hpp>
+	<string>
+	<vector>
+	<functional>
+	"Button.h"
+
+1765714111 source:d:\sfml_codeblocks\src\ui\setting.cpp
+	"Setting.h"
+	"ResourceManager.h"
+	"GlobalSetting.h"
+	"ScaleEffect.h"
+	<iostream>
+	<vector>
+	<string>
+
+1765716102 d:\sfml_codeblocks\include\ui\setting.h
+	<SFML/Graphics.hpp>
+	<vector>
+	<memory>
+	"GameState.h"
+	"Button.h"
+	"IEffect.h"
+	"ResourceManager.h"
+	"Slider.h"
+	"Stepper.h"
+	"RadioButton.h"
+
+1765712809 source:d:\sfml_codeblocks\src\ui\savedgame.cpp
+	"SavedGame.h"
+	<filesystem>
+	<fstream>
+	<sstream>
+	<iostream>
+	<cmath>
+
+1765715925 d:\sfml_codeblocks\include\ui\savedgame.h
+	"GameState.h"
+	"Button.h"
+	"Slider.h"
+	"ResourceManager.h"
+	"SaveDefinition.h"
+	<vector>
+	<memory>
+
+1765713716 d:\sfml_codeblocks\include\ui\gameplay.h
+	<SFML/Graphics.hpp>
+	<SFML/Audio.hpp>
+	<SFML/System/Clock.hpp>
+	<memory>
+	<vector>
+	<stack>
+	<future>
+	<mutex>
+	"GameState.h"
+	"GameLogic.h"
+	"ResourceManager.h"
+	"Button.h"
+	"HistoryList.h"
+	"Timeline.h"
+	"BoardBreathEffect.h"
+	"SaveDefinition.h"
+	"ScoringOverlay.h"
+	"IBot.h"
+	"BotManager.h"
+
+1765716475 d:\sfml_codeblocks\include\ui\about.h
+	"GameState.h"
+	"Button.h"
+	"Slider.h"
+	"ResourceManager.h"
+	<memory>
+
+1765717964 source:d:\sfml_codeblocks\src\ui\gameplay.cpp
+	"GamePlay.h"
+	"ResourceManager.h"
+	"GlobalSetting.h"
+	"ScaleEffect.h"
+	"PachiBot.h"
+	<iostream>
+	<cmath>
+	<string>
+	<sstream>
+	<filesystem>
+
+1765784204 d:\sfml_codeblocks\include\ui\scoringoverlay.h
+	<SFML/Graphics.hpp>
+	<SFML/Audio.hpp>
+	<vector>
+	<deque>
+	"GameLogic.h"
+
+1765784880 source:d:\sfml_codeblocks\src\ui\scoringoverlay.cpp
+	"ScoringOverlay.h"
+	"ResourceManager.h"
+	"GlobalSetting.h"
+	<cmath>
+	<sstream>
+	<iomanip>
+	<algorithm>
+	<iostream>
+
+1765712268 source:d:\sfml_codeblocks\src\ui\globalsetting.cpp
+	"GlobalSetting.h"
+	<string>
+	<vector>
+	<fstream>
+	<iostream>
+
+1765716914 d:\sfml_codeblocks\include\gamecore\globalsetting.h
+	<string>
+	<vector>
+	<functional>
+
+1765716680 d:\sfml_codeblocks\include\gamecore\resourcemanager.h
+	<map>
+	<string>
+	<memory>
+	<list>
+	<SFML/Graphics.hpp>
+	<SFML/Audio.hpp>
+	<SFML/Window/Cursor.hpp>
+
+1765716961 d:\sfml_codeblocks\include\gamecore\ibot.h
+	<string>
+	<vector>
+	<SFML/System/Vector2.hpp>
+
+1765717717 d:\sfml_codeblocks\include\gamecore\pachibot.h
+	"IBot.h"
+	"Bot.h"
+	<string>
+	<sstream>
+
+1765717868 d:\sfml_codeblocks\include\gamecore\bot.h
+	<windows.h>
+	<string>
+	<iostream>
+	<vector>
+	<algorithm>
+	<mutex>
+	<SFML/System/Vector2.hpp>
+	"IBot.h"
+
+1765714664 d:\sfml_codeblocks\include\gamecore\botmanager.h
+	<memory>
+	<thread>
+	<atomic>
+	"IBot.h"
+	"PachiBot.h"
+	"MiniMaxBot.h"
+	"GlobalSetting.h"
+
+1765716880 d:\sfml_codeblocks\include\gamecore\minimaxbot.h
+	"IBot.h"
+	<vector>
+	<limits>
+	<algorithm>
+	<ctime>
+	<cstdlib>
+
+1765711734 source:d:\sfml_codeblocks\src\gamecore\minimaxbot.cpp
+	"MiniMaxBot.h"
+	<iostream>
+

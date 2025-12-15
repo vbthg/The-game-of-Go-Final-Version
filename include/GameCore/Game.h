@@ -1,10 +1,9 @@
-// include/Game.h
 #pragma once
 
 #include <SFML/Graphics.hpp>
 #include <memory>
 #include <string>
-#include "GameState.h" // Chứa enum GameMode, AiDifficulty
+#include "GameState.h"
 
 class Game
 {
@@ -24,22 +23,24 @@ private:
     void handleMainRequest(GameStateType request);
     void handleOverlayRequest(GameStateType request);
 
-    // tìm slot trống cho New Game
+    GameStateType m_pendingRequest;
+    bool m_isFromOverlay;
+
     int getNextAvailableSlotIndex();
 
     sf::RenderWindow m_window;
     sf::Clock m_clock;
     sf::RectangleShape m_dimOverlay;
 
-    std::unique_ptr<GameState> m_currentState; // Main state
-    std::unique_ptr<GameState> m_overlayState; // Popup state
-
+    std::unique_ptr<GameState> m_currentState;
+    std::unique_ptr<GameState> m_overlayState;
 
     GameMode m_nextGameMode;
     AiDifficulty m_nextDifficulty;
     int m_nextBoardSize;
 
+    std::string m_nextLoadFile;
+    int m_currentSlotIndex;
 
-    std::string m_nextLoadFile;      // Lưu tên file để Load
-    int m_currentSlotIndex;          // Lưu slot hiện tại (-1 nếu là New Game)
+    float m_delayTimer = 0.0f;
 };

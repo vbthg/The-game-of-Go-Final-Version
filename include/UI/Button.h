@@ -6,7 +6,6 @@
 
 namespace UI
 {
-
 class Button
 {
 public:
@@ -16,7 +15,6 @@ public:
     Button(const sf::Texture& textureRef,
            const sf::Vector2f& position,
            bool isInteractive = true);
-
 
     virtual ~Button() = default;
 
@@ -43,24 +41,19 @@ public:
     bool isHoveredAndInteractive() const;
 
 private:
-
     void applyVisualState();
 
+    sf::Sprite m_sprite;
 
-    sf::Sprite m_sprite;     // Sprite của nút
-
-    // Các màu sắc cho các trạng thái
     sf::Color normalColor;
     sf::Color hoverColor;
     sf::Color pressedColor;
 
-    // Trạng thái logic
-    bool m_isInteractive; // Nút có hoạt động không
-    bool hovered;         // Chuột đang trỏ vào hay ko
-    bool pressed;         // Đang bị nhấn giữ hay ko
+    bool m_isInteractive;
+    bool hovered;
+    bool pressed;
 
-    // Hàm callback
-    std::function<void()> onClick; // Hàm được gọi khi click
+    std::function<void()> onClick;
 };
 
 }

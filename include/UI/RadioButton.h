@@ -12,7 +12,6 @@ namespace UI
 class RadioGroup
 {
 public:
-
     RadioGroup(int numOptions,
                sf::Vector2f position,
                float spacing);
@@ -33,7 +32,6 @@ private:
     std::vector<std::unique_ptr<Button>> m_buttons;
     std::function<void(int)> onChange;
 
-    // Texture tự sinh
     sf::Texture m_generatedBtnTexture;
 
 };

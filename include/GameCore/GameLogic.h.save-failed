@@ -1,0 +1,145 @@
+```
+// include/GameLogic.h
+#pragma once
+
+#include <vector>
+#include <string>
+#include <stack>
+#include <SFML/System/Vector2.hpp> // Cần cho sf::Vector2i
+//#include "SaveDefinition.h"
+//#include "GamePlay.h"
+
+// Enum cho các loại quân cờ
+enum class StoneType
+{
+    Empty,
+    Black,
+    White
+};
+
+// [THÊM MỚI] Enum chủ sở hữu lãnh thổ
+enum class TerritoryOwner
+{
+    None,    // Chưa xét
+    Black,   // Lãnh thổ Đen
+    White,   // Lãnh thổ Trắng
+    Neutral  // Vùng trung lập (Dame)
+};
+
+// Struct để trả về kết quả của một nước đi
+struct MoveResult
+{
+    bool success;
+    std::string message;
+    std::vector<std::pair<int, int>> capturedStones;
+    bool gameEnded;
+};
+
+// Struct snapshot cho Undo/Redo
+struct GameStateSnapshot
+{
+    std::vector<std::vector<StoneType>> board;
+    bool isBlacksTurn;
+    std::pair<int, int> koPosition;
+    bool lastPlayerPassed;
+};
+
+// [THÊM MỚI] Struct lưu trữ một vùng lãnh thổ (để UI vẽ hiệu ứng)
+struct TerritoryRegion
+{
+    TerritoryOwner owner;                 // Vùng này của ai?
+    std::vector<sf::Vector2i> points;     // Danh sách tất cả các ô trong vùng
+    std::vector<sf::Vector2i> boundaries; // Danh sách các ô nằm ở biên (tiếp giáp quân cờ/bàn cờ)
+};
+
+// [THÊM MỚI] Struct thông tin quân chết (Cần thiết cho ScoringOverlay)
+struct DeadStoneInfo
+{
+    sf::Vector2i pos;
+    TerritoryOwner owner;
+};
+
+// [QUAN TRỌNG] Đây là struct đang bị thiếu gây ra lỗi
+struct ScoreData
+{
+    float blackStones = 0;    // Số quân đen trên bàn (hoặc tù binh, tùy luật)
+    float blackTerritory = 0; // Số đất đen
+    float whiteStones = 0;
+    float whiteTerritory = 0;
+    float komi = 0;
+};
+
+
+
+class GameLogic
+{
+public:
+    // Constructor receiving board size
+
+    struct StoneCount
+    {
+        int blackStones = 0;
+        int whiteStones = 0;
+    };
+
+    GameLogic(int size);
+
+    void newGame();
+    MoveResult attemptMove(int x, int y);
+    MoveResult attemptPass();
+
+    // Undo/Redo
+    void undo();
+    void redo();
+    bool canUndo() const;
+    bool canRedo() const;
+
+    // Getters
+    StoneType getStoneAt(int x, int y) const;
+    bool isBlacksTurn() const;
+    int getBoardSize() const { return m_boardSize; }
+
+    // Save/Load
+    bool saveToFile(const std::string& filePath, const SaveInfo& info, float timeBlack, float timeWhite, int difficulty) const;
+    // include/GameLogic.h
+    bool loadFromFile(const std::string& filePath, float& timeBlack, float& timeWhite, std::string& modeStr, int& difficulty, std::string& endReason);
+
+    // [THÊM MỚI] Hàm tính toán danh sách các vùng lãnh thổ (cho ScoringOverlay)
+//    std::vector<TerritoryRegion> getTerritoryRegions() const;
+    std::vector<TerritoryRegion> getTerritoryRegions(const std::vector<sf::Vector2i>& deadStones) const;
+
+
+    // [THÊM MỚI] Lấy tham chiếu bàn cờ (để UI vẽ nhanh)
+    const std::vector<std::vector<StoneType>>& getBoard() const { return m_board; }
+
+    ScoreData calculateScore(const std::vector<DeadStoneInfo>& deadStones, float komi);
+
+    // Khai báo hàm lấy số quân
+    StoneCount getStoneCount() const;
+
+private:
+    int m_boardSize;
+
+    std::vector<std::vector<StoneType>> m_board;
+    std::vector<std::vector<StoneType>> m_previousBoard;
+    bool m_isBlacksTurn;
+    std::pair<int, int> m_koPosition;
+    bool m_lastPlayerPassed;
+
+    std::stack<GameStateSnapshot> m_undoStack;
+    std::stack<GameStateSnapshot> m_redoStack;
+
+    GameStateSnapshot createSnapshot() const;
+    void restoreState(const GameStateSnapshot& state);
+
+    int findGroupLiberties(int x, int y, StoneType player,
+                           std::vector<std::vector<bool>>& visited_stones,
+                           std::vector<std::pair<int, int>>& group,
+                           std::vector<std::vector<bool>>& visited_liberties);
+
+    void removeGroup(const std::vector<std::pair<int, int>>& group);
+    bool isKo(int x, int y);
+    bool isSuicide(int x, int y, StoneType player);
+    std::vector<std::pair<int, int>> checkAndRemoveCaptures(int x, int y, StoneType player);
+};
+```

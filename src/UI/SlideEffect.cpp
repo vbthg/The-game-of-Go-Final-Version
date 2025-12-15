@@ -6,19 +6,17 @@ namespace UI
 {
 
 SlideEffect::SlideEffect(sf::Sprite& target,
-            sf::Vector2f startPos,
-            const float& slideDuration):
-
-                m_target(target),
-                m_startPos(startPos),
-                m_endPos(target.getPosition()),
-                m_slideDuration(slideDuration),
-                m_elapsedTime(0.f),
-                m_isFinished(false)
-                {
-                    m_target.setPosition(m_startPos);
-                }
-
+                         sf::Vector2f startPos,
+                         const float& slideDuration):
+    m_target(target),
+    m_startPos(startPos),
+    m_endPos(target.getPosition()),
+    m_slideDuration(slideDuration),
+    m_elapsedTime(0.f),
+    m_isFinished(false)
+{
+    m_target.setPosition(m_startPos);
+}
 
 void SlideEffect::update(float deltaTime)
 {
@@ -39,7 +37,7 @@ void SlideEffect::update(float deltaTime)
 
     m_target.setPosition(sf::Vector2f(x, y));
 
-    if (m_isFinished)
+    if(m_isFinished)
     {
         m_target.setPosition(m_endPos);
     }

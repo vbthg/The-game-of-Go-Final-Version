@@ -6,8 +6,11 @@
 #include "Setting.h"
 #include "About.h"
 #include "Pause.h"
+#include "GlobalSetting.h"
 #include "SavedGame.h"
 #include <filesystem>
+
+const float DELAY_TRANSITION = 0.15f;
 
 Game::Game(unsigned int width, unsigned int height, const std::string& title) :
     m_window(sf::VideoMode(width, height), title),
@@ -16,7 +19,6 @@ Game::Game(unsigned int width, unsigned int height, const std::string& title) :
     m_nextGameMode(GameMode::PlayerVsPlayer),
     m_nextDifficulty(AiDifficulty::Easy),
     m_nextBoardSize(19),
-
     m_nextLoadFile(""),
     m_currentSlotIndex(-1)
 {
@@ -30,15 +32,28 @@ Game::Game(unsigned int width, unsigned int height, const std::string& title) :
     int centerX = (int)(desktop.width - width) / 2;
     int centerY = (int)(desktop.height - height) / 2 - 50;
 
-    if (centerY < 0) centerY = 0;
-    if (centerX < 0) centerX = 0;
+    if(centerY < 0)
+    {
+        centerY = 0;
+    }
+    if(centerX < 0)
+    {
+        centerX = 0;
+    }
 
     m_window.setPosition(sf::Vector2i(centerX, centerY));
+
+    auto& gs = GlobalSetting::getInstance();
+    auto& rm = ResourceManager::getInstance();
+
+    rm.setMusicVolume(gs.musicVolume);
+
+    rm.playMusic(gs.musicThemeIndex);
 }
 
 void Game::run()
 {
-    while (m_window.isOpen())
+    while(m_window.isOpen())
     {
         sf::Time deltaTime = m_clock.restart();
 
@@ -50,21 +65,25 @@ void Game::run()
 
 void Game::handleEvents()
 {
-    sf::Event event;
-    while (m_window.pollEvent(event))
+    if(m_pendingRequest != GameStateType::NoChange)
     {
-        if (event.type == sf::Event::Closed)
+        return;
+    }
+
+    sf::Event event;
+    while(m_window.pollEvent(event))
+    {
+        if(event.type == sf::Event::Closed)
         {
             m_window.close();
             return;
         }
 
-        if (m_overlayState)
+        if(m_overlayState)
         {
             m_overlayState->handleEvent(event);
         }
-
-        else if (m_currentState)
+        else if(m_currentState)
         {
             m_currentState->handleEvent(event);
         }
@@ -74,19 +93,60 @@ void Game::handleEvents()
 void Game::update(sf::Time deltaTime)
 {
     float dtSeconds = deltaTime.asSeconds();
+    m_delayTimer -= dtSeconds;
+    if(m_delayTimer < 0.f)
+    {
+        m_delayTimer = 0.f;
+    }
 
-    if (m_overlayState)
+    if(m_pendingRequest != GameStateType::NoChange)
+    {
+        if(m_overlayState)
+        {
+            m_overlayState -> update(dtSeconds);
+        }
+        if(m_currentState)
+        {
+            m_currentState -> update(dtSeconds);
+        }
+
+        if(m_delayTimer <= 0.f)
+        {
+            if(m_isFromOverlay)
+            {
+                handleOverlayRequest(m_pendingRequest);
+            }
+            else
+            {
+                handleMainRequest(m_pendingRequest);
+            }
+            m_pendingRequest = GameStateType::NoChange;
+        }
+        return;
+    }
+
+    if(m_overlayState)
     {
         GameStateType request = m_overlayState->update(dtSeconds);
-        handleOverlayRequest(request);
+        if(request != GameStateType::NoChange)
+        {
+            m_delayTimer = DELAY_TRANSITION;
+            m_pendingRequest = request;
+            m_isFromOverlay = true;
+        }
 
         return;
     }
 
-    if (m_currentState)
+    if(m_currentState)
     {
         GameStateType request = m_currentState->update(dtSeconds);
-        handleMainRequest(request);
+        if(request != GameStateType::NoChange)
+        {
+            m_delayTimer = DELAY_TRANSITION;
+            m_pendingRequest = request;
+            m_isFromOverlay = false;
+        }
     }
 }
 
@@ -94,12 +154,12 @@ void Game::draw()
 {
     m_window.clear(sf::Color::Black);
 
-    if (m_currentState)
+    if(m_currentState)
     {
         m_currentState->draw();
     }
 
-    if (m_overlayState)
+    if(m_overlayState)
     {
         m_window.draw(m_dimOverlay);
         m_overlayState->draw();
@@ -108,13 +168,12 @@ void Game::draw()
     m_window.display();
 }
 
-
 int Game::getNextAvailableSlotIndex()
 {
     int idx = 1;
     namespace fs = std::filesystem;
-
-    while (fs::exists("assets/saves/slot_" + std::to_string(idx) + ".txt")) {
+    while(fs::exists("assets/saves/slot_" + std::to_string(idx) + ".txt"))
+    {
         idx++;
     }
     return idx;
@@ -122,42 +181,55 @@ int Game::getNextAvailableSlotIndex()
 
 void Game::handleMainRequest(GameStateType request)
 {
-    if (request == GameStateType::NoChange) return;
-    if (request == GameStateType::Quit) { m_window.close(); return; }
+    if(m_delayTimer > 0.f)
+    {
+        return;
+    }
 
-    if (request == GameStateType::MainMenu || request == GameStateType::NewGame)
+    if(request == GameStateType::NoChange)
+    {
+        return;
+    }
+    if(request == GameStateType::Quit)
+    {
+        m_window.close();
+        return;
+    }
+
+    if(request == GameStateType::MainMenu || request == GameStateType::NewGame)
     {
         m_currentState = createState(request);
     }
-    else if (request == GameStateType::SizeSelect)
+    else if(request == GameStateType::SizeSelect)
     {
         NewGame* ng = dynamic_cast<NewGame*>(m_currentState.get());
-        if (ng)
+        if(ng)
         {
-            m_nextGameMode = ng -> getSelectedGameMode();
-            transitionPos = ng -> getLastClickPos();
+            m_nextGameMode = ng->getSelectedGameMode();
+            transitionPos = ng->getLastClickPos();
         }
         m_currentState = createState(request);
     }
-    else if (request == GameStateType::GamePlay)
+    else if(request == GameStateType::GamePlay)
     {
         SizeSelection* ss = dynamic_cast<SizeSelection*>(m_currentState.get());
-        if (ss)
+        if(ss)
         {
             m_nextBoardSize = ss->getSelectedSize();
             m_nextDifficulty = ss->getSelectedDifficulty();
         }
 
         m_currentSlotIndex = -1;
+
         m_currentState = createState(request);
     }
-    else if (request == GameStateType::SavedGame)
+    else if(request == GameStateType::SavedGame)
     {
         SavedGame* saveMenu = dynamic_cast<SavedGame*>(m_currentState.get());
 
-        if (saveMenu)
+        if(saveMenu)
         {
-            m_nextLoadFile = saveMenu -> getFileToLoad();
+            m_nextLoadFile = saveMenu->getFileToLoad();
 
             std::string filename = std::filesystem::path(m_nextLoadFile).stem().string();
             try
@@ -178,7 +250,7 @@ void Game::handleMainRequest(GameStateType request)
             m_currentState = createState(GameStateType::SavedGame);
         }
     }
-    else if (request == GameStateType::PauseMenu || request == GameStateType::Settings || request == GameStateType::About)
+    else if(request == GameStateType::PauseMenu || request == GameStateType::Settings || request == GameStateType::About)
     {
         m_overlayState = createState(request);
     }
@@ -186,62 +258,74 @@ void Game::handleMainRequest(GameStateType request)
 
 void Game::handleOverlayRequest(GameStateType request)
 {
-    if (request == GameStateType::NoChange) return;
+    if(request == GameStateType::NoChange)
+    {
+        return;
+    }
 
-    if (request == GameStateType::GoBack)
+    if(request == GameStateType::GoBack)
     {
         m_overlayState.reset();
     }
-
-    else if (request == GameStateType::Settings || request == GameStateType::About)
+    else if(request == GameStateType::Settings || request == GameStateType::About)
     {
         m_overlayState = createState(request);
     }
-
-    else if (request == GameStateType::MainMenu)
+    else if(request == GameStateType::MainMenu)
     {
         m_overlayState.reset();
         m_currentState = createState(GameStateType::MainMenu);
     }
-
-    else if (request == GameStateType::Quit)
+    else if(request == GameStateType::Quit)
     {
         m_window.close();
     }
-
-    else if (request == GameStateType::ResetGame)
+    else if(request == GameStateType::ResetGame)
     {
         m_overlayState.reset();
         m_currentState = createState(GameStateType::GamePlay);
     }
-
-    else if (request == GameStateType::SaveGameRequest)
+    else if(request == GameStateType::SaveGameRequest)
     {
         GamePlay* gp = dynamic_cast<GamePlay*>(m_currentState.get());
-        if (gp)
+        if(gp)
         {
-            if (m_currentSlotIndex == -1)
+            if(m_currentSlotIndex == -1)
             {
                 m_currentSlotIndex = getNextAvailableSlotIndex();
             }
-            gp -> performSaveGame(m_currentSlotIndex);
+            gp->performSaveGame(m_currentSlotIndex);
         }
     }
 }
 
 std::unique_ptr<GameState> Game::createState(GameStateType state)
 {
-    switch (state)
+    switch(state)
     {
-        case GameStateType::MainMenu: return std::make_unique<MainMenu>(m_window);
-        case GameStateType::NewGame: return std::make_unique<NewGame>(m_window);
-        case GameStateType::SizeSelect: return std::make_unique<SizeSelection>(m_window, m_nextGameMode, transitionPos);
-        case GameStateType::GamePlay: return std::make_unique<GamePlay>(m_window, m_nextBoardSize, m_nextGameMode, m_nextDifficulty);
-        case GameStateType::SavedGame: return std::make_unique<SavedGame>(m_window); // Menu Load
+        case GameStateType::MainMenu:
+            return std::make_unique<MainMenu>(m_window);
+        case GameStateType::NewGame:
+            return std::make_unique<NewGame>(m_window);
+        case GameStateType::SizeSelect:
+            return std::make_unique<SizeSelection>(m_window, m_nextGameMode, transitionPos);
+        case GameStateType::GamePlay:
+        {
+            auto gp = std::make_unique<GamePlay>(m_window, m_nextBoardSize, m_nextGameMode, m_nextDifficulty);
+            gp->startGameInitialization();
+            return gp;
+//            return std::make_unique<GamePlay>(m_window, m_nextBoardSize, m_nextGameMode, m_nextDifficulty);
+        }
+        case GameStateType::SavedGame:
+            return std::make_unique<SavedGame>(m_window);
 
-        case GameStateType::Settings: return std::make_unique<Setting>(m_window);
-        case GameStateType::About: return std::make_unique<About>(m_window);
-        case GameStateType::PauseMenu: return std::make_unique<PauseMenu>(m_window);
-        default: return std::make_unique<MainMenu>(m_window);
+        case GameStateType::Settings:
+            return std::make_unique<Setting>(m_window);
+        case GameStateType::About:
+            return std::make_unique<About>(m_window);
+        case GameStateType::PauseMenu:
+            return std::make_unique<PauseMenu>(m_window);
+        default:
+            return std::make_unique<MainMenu>(m_window);
     }
 }

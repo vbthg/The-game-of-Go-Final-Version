@@ -1,11 +1,13 @@
 #pragma once
-#include <SFML/Graphics.hpp>
+#include <SFML/Graphics.hpp> // <-- ĐÃ THÊM
 #include "IEffect.h"
+// #include "Button.h" // <-- ĐÃ XÓA
 #include <cmath>
 
 #ifndef M_PI
     #define M_PI 3.14159265358979323846f
 #endif
+
 
 namespace UI
 {
@@ -13,37 +15,18 @@ namespace UI
 class ScaleEffect: public IEffect
 {
 public:
-
     ScaleEffect(sf::Sprite& target, float growDuration, float popDuration, float popAmount);
 
-    /**
-     * Kích hoạt chuỗi hiệu ứng xuất hiện (0.0 -> x -> 1.0).
-     */
     void pop_init();
 
-    /**
-     * Kích hoạt chuỗi hiệu ứng nhấn (1.0 -> x -> 1.0).
-     */
     void bounce_init();
 
-    /**
-     * Cập nhật trạng thái hiệu ứng (PHẢI GỌI MỖI KHUNG HÌNH).
-     */
     void update(float deltaTime) override;
 
-    /**
-     * Kích hoạt hiệu ứng nhấn (bounce).
-     */
     void trigger() override;
 
-    /**
-     * Kiểm tra xem hiệu ứng đã hoàn thành hay chưa.
-     */
     bool isFinished() const override;
 
-    /**
-     * Cho phép thay đổi độ nảy ('x') một cách linh hoạt.
-     */
     void setPopAmount(float amount);
 
 private:
@@ -55,6 +38,8 @@ private:
         POPPING,
         SETTLING
     };
+
+
     State m_state;
 
     sf::Sprite& m_target;

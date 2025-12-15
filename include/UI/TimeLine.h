@@ -1,3 +1,4 @@
+// include/Timeline.h
 #pragma once
 
 #include <SFML/Graphics.hpp>
@@ -22,7 +23,7 @@ private:
         {
             STATIC,
             SLIDING_IN,
-            SHRINKING_OUT
+            SHRINKING_OUT,
         };
         State state = State::STATIC;
 
@@ -45,7 +46,7 @@ public:
     void removeLastSegment();
     void clear();
 
-    float getLastMoveTime() const; // Lấy thời gian để Redo
+    float getLastMoveTime() const;
 
 private:
     void recalculateProportions();

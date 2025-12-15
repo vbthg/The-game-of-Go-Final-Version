@@ -12,18 +12,14 @@ Stepper::Stepper(sf::Vector2f minusBtnPos,
     m_options(options),
     m_currentIndex(defaultIndex),
     onChange(nullptr),
-
     m_prevBtn(ResourceManager::getInstance().getTexture("stepper_minus_btn"), {0,0}, true),
     m_nextBtn(ResourceManager::getInstance().getTexture("stepper_plus_btn"), {0,0}, true)
 {
-
     m_font = ResourceManager::getInstance().getFont("main_font");
-
 
     m_valueLabel.setFont(m_font);
     m_valueLabel.setCharacterSize(24);
     m_valueLabel.setFillColor(sf::Color::Black);
-
 
     m_prevBtn.setPosition(minusBtnPos);
 
@@ -33,14 +29,19 @@ Stepper::Stepper(sf::Vector2f minusBtnPos,
 
     m_valueLabel.setPosition(m_centerPosition);
 
-
     if(m_currentIndex < 0) m_currentIndex = 0;
     if(m_currentIndex >= (int)m_options.size()) m_currentIndex = (int)m_options.size() - 1;
 
     updateLabel();
 
-    m_prevBtn.setOnClick([this](){ this->prevOption(); });
-    m_nextBtn.setOnClick([this](){ this->nextOption(); });
+    m_prevBtn.setOnClick([this]()
+    {
+        this->prevOption();
+    });
+    m_nextBtn.setOnClick([this]()
+    {
+        this->nextOption();
+    });
 }
 
 void Stepper::handleEvent(sf::Event& event, const sf::RenderWindow& window)
@@ -62,8 +63,14 @@ void Stepper::draw(sf::RenderTarget& target) const
     m_nextBtn.draw(target);
 }
 
-void Stepper::setOnChange(std::function<void(int)> cb) { onChange = cb; }
-int Stepper::getSelectedIndex() const { return m_currentIndex; }
+void Stepper::setOnChange(std::function<void(int)> cb)
+{
+    onChange = cb;
+}
+int Stepper::getSelectedIndex() const
+{
+    return m_currentIndex;
+}
 std::string Stepper::getSelectedString() const
 {
     if(m_options.empty()) return "";
@@ -102,7 +109,6 @@ void Stepper::updateLabel()
     m_valueLabel.setString(m_options[m_currentIndex]);
 
     sf::FloatRect bounds = m_valueLabel.getLocalBounds();
-
 
     m_valueLabel.setOrigin(
         bounds.left + bounds.width / 2.f,

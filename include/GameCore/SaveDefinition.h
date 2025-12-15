@@ -2,14 +2,18 @@
 #include <string>
 
 struct SaveInfo {
-    int slotIndex;              // ID slot
-    std::string filename;       // Đường dẫn file .txt
-    std::string screenshotPath; // Đường dẫn file .png
+    int slotIndex;
+    std::string filename;
+    std::string screenshotPath;
 
-    // Metadata hiển thị
-    std::string userTitle;      // Tên (vd: Game 1)
-    std::string timestamp;      // Thời gian lưu
-    int boardSize;              // 19
-    std::string modeStr;        // PvP / PvE
-    std::string status;         // Ongoing / Finished
+
+    std::string userTitle;
+    std::string timestamp;
+    int boardSize;
+    std::string modeStr;
+    std::string status;
+
+    int difficulty = 1;
+
+    std::string endReason = "";
 };

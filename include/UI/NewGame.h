@@ -1,3 +1,4 @@
+// include/NewGame.h
 #pragma once
 
 #include <SFML/Graphics.hpp>
@@ -8,7 +9,6 @@
 #include "Button.h"
 #include "IEffect.h"
 #include "ResourceManager.h"
-
 
 class NewGame : public GameState
 {
@@ -28,7 +28,6 @@ private:
     void createUI();
     void createEffects();
 
-
     void onpvpClick();
     void onpvbotClick();
     void onbackClick();
@@ -37,17 +36,13 @@ private:
     GameStateType m_requestedState;
     sf::Sprite m_backgroundSprite;
 
-
     UI::Button m_pvpBtn;
     UI::Button m_pvbotBtn;
     UI::Button m_backBtn;
 
-
     GameMode m_selectedMode;
 
-    // Biến lưu tọa độ click
     sf::Vector2f m_lastClickPos;
-
 
     std::vector<UI::Button*> m_allButtons;
     std::vector<std::unique_ptr<IEffect>> m_persistentEffects;

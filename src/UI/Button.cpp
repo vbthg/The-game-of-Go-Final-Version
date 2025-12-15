@@ -10,27 +10,26 @@ namespace UI
 
 Button::Button(const sf::Texture& textureRef,
                const sf::Vector2f& position,
-               bool isInteractive) :
+               bool isInteractive):
 
                hovered(false),
                pressed(false),
                m_isInteractive(isInteractive),
                onClick(nullptr)
-{
-   m_sprite.setTexture(textureRef);
+               {
+                   m_sprite.setTexture(textureRef);
 
-   normalColor = sf::Color::White;
-   hoverColor = sf::Color(200, 200, 200);
-   pressedColor = sf::Color(150, 150, 150);
+                   normalColor = sf::Color::White;
+                   hoverColor = sf::Color(200, 200, 200);
+                   pressedColor = sf::Color(150, 150, 150);
 
-   sf::FloatRect spriteSize = m_sprite.getLocalBounds();
-   float centerX = (spriteSize.left + spriteSize.width) / 2.f;
-   float centerY = (spriteSize.top + spriteSize.height) / 2.f;
-   m_sprite.setOrigin(sf::Vector2f(centerX, centerY));
+                   sf::FloatRect spriteSize = m_sprite.getLocalBounds();
+                   float centerX = (spriteSize.left + spriteSize.width) / 2.f;
+                   float centerY = (spriteSize.top + spriteSize.height) / 2.f;
+                   m_sprite.setOrigin(sf::Vector2f(centerX, centerY));
 
-   setPosition(position);
-}
-
+                   setPosition(position);
+               }
 
 void Button::setPosition(const sf::Vector2f& pos)
 {
@@ -54,22 +53,22 @@ sf::Vector2f Button::getPosition() const
 
 bool Button::handleEvent(const sf::Event& ev, const sf::RenderWindow& window)
 {
-    if (!m_isInteractive) return false;
+    if(!m_isInteractive) return false;
 
-    if (ev.type == sf::Event::MouseButtonPressed && ev.mouseButton.button == sf::Mouse::Left)
+    if(ev.type == sf::Event::MouseButtonPressed && ev.mouseButton.button == sf::Mouse::Left)
     {
         sf::Vector2f mousePos = window.mapPixelToCoords(sf::Vector2i(ev.mouseButton.x, ev.mouseButton.y));
 
-        if (m_sprite.getGlobalBounds().contains(mousePos))
+        if(m_sprite.getGlobalBounds().contains(mousePos))
         {
             pressed = true;
             applyVisualState();
         }
     }
 
-    if (ev.type == sf::Event::MouseButtonReleased && ev.mouseButton.button == sf::Mouse::Left)
+    if(ev.type == sf::Event::MouseButtonReleased && ev.mouseButton.button == sf::Mouse::Left)
     {
-        if (pressed)
+        if(pressed)
         {
             pressed = false;
 
@@ -77,7 +76,7 @@ bool Button::handleEvent(const sf::Event& ev, const sf::RenderWindow& window)
 
             sf::Vector2f mousePos = window.mapPixelToCoords(sf::Vector2i(ev.mouseButton.x, ev.mouseButton.y));
 
-            if (m_sprite.getGlobalBounds().contains(mousePos) && onClick != nullptr)
+            if(m_sprite.getGlobalBounds().contains(mousePos) && onClick != nullptr)
             {
                 onClick();
                 return true;
@@ -90,12 +89,13 @@ bool Button::handleEvent(const sf::Event& ev, const sf::RenderWindow& window)
 
 void Button::update(const sf::RenderWindow& window)
 {
-    if (!m_isInteractive) return;
+    if(!m_isInteractive) return;
+
     hovered = false;
 
     sf::Vector2f mousePos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
 
-    if (m_sprite.getGlobalBounds().contains(mousePos))
+    if(m_sprite.getGlobalBounds().contains(mousePos))
     {
         hovered = true;
     }
@@ -120,7 +120,7 @@ sf::Sprite& Button::getSprite()
 
 void Button::setVisualState(bool isHovered, bool isPressed)
 {
-    if (!m_isInteractive) return;
+    if(!m_isInteractive) return;
 
     hovered = isHovered;
     pressed = isPressed;
@@ -135,13 +135,13 @@ bool Button::isHoveredAndInteractive() const
 
 void Button::applyVisualState()
 {
-    if (!m_isInteractive) return;
+    if(!m_isInteractive) return;
 
-    if (pressed)
+    if(pressed)
     {
         m_sprite.setColor(pressedColor);
     }
-    else if (hovered)
+    else if(hovered)
     {
         m_sprite.setColor(hoverColor);
     }

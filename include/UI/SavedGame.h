@@ -1,4 +1,3 @@
-
 #pragma once
 
 #include "GameState.h"
@@ -9,8 +8,7 @@
 #include <vector>
 #include <memory>
 
-struct SaveSlotUI
-{
+struct SaveSlotUI {
     SaveInfo info;
     sf::RectangleShape panel;
     sf::Sprite thumbnail;
@@ -23,9 +21,7 @@ struct SaveSlotUI
     std::unique_ptr<UI::Button> btnDelete;
 };
 
-
-class SavedGame : public GameState
-{
+class SavedGame : public GameState {
 public:
     SavedGame(sf::RenderWindow& window);
     virtual ~SavedGame() = default;

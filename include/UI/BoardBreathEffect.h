@@ -1,6 +1,7 @@
+// include/UI/BoardBreathEffect.h
 #pragma once
 
-#include <cmath>
+#include <cmath> // Dùng cho acos
 
 namespace UI
 {

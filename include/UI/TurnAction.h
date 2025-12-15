@@ -1,0 +1,1 @@
+// quản lý các nút: undo, redo, pass

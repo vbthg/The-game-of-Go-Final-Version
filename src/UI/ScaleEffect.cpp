@@ -5,6 +5,7 @@
 #include <string>
 #include <cmath>
 #include <algorithm>
+#include <iostream>
 
 namespace UI
 {
@@ -23,7 +24,6 @@ ScaleEffect::ScaleEffect(sf::Sprite& target, float growDuration, float popDurati
     m_target.setScale(1.f, 1.f);
 }
 
-
 void ScaleEffect::pop_init()
 {
     m_state = State::GROWING;
@@ -37,7 +37,7 @@ void ScaleEffect::pop_init()
 
 void ScaleEffect::bounce_init()
 {
-    if (m_state != State::IDLE) return;
+    if(m_state != State::IDLE) return;
 
     m_state = State::POPPING;
     m_elapsedTime = 0.f;
@@ -48,8 +48,6 @@ void ScaleEffect::bounce_init()
 
 void ScaleEffect::update(float deltaTime)
 {
-    if(m_startScale == m_finalScale) m_state = State::IDLE; ///
-
     if(isFinished()) return;
 
     m_elapsedTime += deltaTime;
@@ -60,9 +58,13 @@ void ScaleEffect::update(float deltaTime)
     }
 
     float Ratio = 0.f;
-    if (m_currentDuration > 0.f)
+    if(m_currentDuration > 0.f)
     {
         Ratio = m_elapsedTime / m_currentDuration;
+    }
+    else
+    {
+        Ratio = 1.f;
     }
 
     float easedRatio = sin(Ratio * (M_PI / 2.f));

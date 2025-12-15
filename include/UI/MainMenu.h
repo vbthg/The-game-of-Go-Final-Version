@@ -23,29 +23,23 @@ private:
     void createUI();
     void createEffects();
 
-
     void onNewGameClick();
     void onSavedGameClick();
     void onExitClick();
 
-
     void onSettingClick();
     void onAboutClick();
-
 
     sf::RenderWindow& m_window;
     GameStateType m_requestedState;
     sf::Sprite m_backgroundSprite;
 
-
     UI::Button m_NewGameBtn;
     UI::Button m_SavedGameBtn;
     UI::Button m_ExitBtn;
 
-
     UI::Button m_SettingBtn;
     UI::Button m_AboutBtn;
-
 
     std::vector<UI::Button*> m_allButtons;
     std::vector<std::unique_ptr<IEffect>> m_persistentEffects;

@@ -20,8 +20,7 @@ RadioGroup::RadioGroup(int numOptions,
     {
         float buttonX = startX + (i * (texWidth + spacing)) + (texWidth / 2.f);
 
-        auto button = std::make_unique<Button>
-        (
+        auto button = std::make_unique<Button>(
             m_generatedBtnTexture,
             sf::Vector2f{buttonX, startY},
             true
@@ -63,7 +62,7 @@ void RadioGroup::handleEvent(sf::Event& event, const sf::RenderWindow& window)
         sf::Vector2f mousePos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
         for(size_t i = 0; i < m_buttons.size(); ++i)
         {
-            if (m_buttons[i] -> getSprite().getGlobalBounds().contains(mousePos))
+            if(m_buttons[i]->getSprite().getGlobalBounds().contains(mousePos))
             {
                 onOptionClicked(static_cast<int>(i));
                 break;
@@ -79,7 +78,7 @@ void RadioGroup::update(const sf::RenderWindow& window)
     {
         bool isHovered = m_buttons[i]->getSprite().getGlobalBounds().contains(mousePos);
         bool isActive = (static_cast<int>(i) == m_activeIndex);
-        m_buttons[i] -> setVisualState(isHovered, isActive);
+        m_buttons[i]->setVisualState(isHovered, isActive);
     }
 }
 
@@ -87,7 +86,7 @@ void RadioGroup::draw(sf::RenderTarget& target) const
 {
     for(const auto& button : m_buttons)
     {
-        button -> draw(target);
+        button->draw(target);
     }
 }
 
@@ -98,11 +97,17 @@ void RadioGroup::onOptionClicked(int index)
     if(onChange) onChange(m_activeIndex);
 }
 
-void RadioGroup::setOnChange(std::function<void(int)> cb) { onChange = cb; }
-int RadioGroup::getSelectedIndex() const { return m_activeIndex; }
+void RadioGroup::setOnChange(std::function<void(int)> cb)
+{
+    onChange = cb;
+}
+int RadioGroup::getSelectedIndex() const
+{
+    return m_activeIndex;
+}
 void RadioGroup::setSelectedIndex(int index)
 {
-    if (index >= 0 && index < static_cast<int>(m_buttons.size()))
+    if(index >= 0 && index < static_cast<int>(m_buttons.size()))
         m_activeIndex = index;
 }
 
