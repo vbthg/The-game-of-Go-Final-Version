@@ -9,8 +9,8 @@
 >
 > The submitted version is **fully functional and feature-complete**. However, a minor visual regression was introduced during the final optimization phase on the deadline. Due to a missing default initialization in the `VirtualConnectedComponent` struct (specifically the `anchorDistance` variable), the *territory wave animation* (visual effect) might be invisible in the submitted build.
 >
-> **Rest assured, the core logic and scoring mechanics remain accurate.** The source code hosted here on GitHub fixes this visual issue. To restore the animation in the submitted version, you can do one of the following:
-> * **Option 1 (Recommended):** Copy the `include/UI/ScoringOverlay.h` file from this repository and replace the one in your project.
+> **Rest assured, the core logic and scoring mechanics remain accurate.** The source code hosted here on GitHub fixes this visual issue. BUT, if the game crashed (runtime error) when the match finished, or if you want to restore the animation in the submitted version, I hope you do one of the following:
+> * **Option 1 (Recommended):** Copy the `include/UI/ScoringOverlay.h` file from this repository and replace the one in your project folder.
 > * **Option 2 (Manual Fix):** Open `ScoringOverlay.h` and initialize `anchorDistance` to a large value (e.g., `1000000000` or `1e9`) directly inside the struct definition.
 
 > **Final Project - Introduction to Computer Science**
