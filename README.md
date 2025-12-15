@@ -7,9 +7,11 @@
 
 > **⚠️ Important Note regarding the GitHub Version vs. Submitted Version:**
 >
-> During the final optimization phase on the submission deadline, I attempted to refactor the code and enhance the Scoring Phase effects. Unfortunately, this introduced a regression in the **Territory Visualization**: I removed the explicit initialization in the constructor to optimize performance but inadvertently forgot to add default member initialization inside the struct.
+> The submitted version is **fully functional and feature-complete**. However, a minor visual regression was introduced during the final optimization phase on the deadline. Due to a missing default initialization in the `VirtualConnectedComponent` struct (specifically the `anchorDistance` variable), the *territory wave animation* (visual effect) might be invisible in the submitted build.
 >
-> As a result, the *territory search process animation* (the wave effect) might be missing in the submitted zip package. **The source code hosted here on GitHub fixes this issue and represents the definitive, fully functional version of the project.**
+> **Rest assured, the core logic and scoring mechanics remain accurate.** The source code hosted here on GitHub fixes this visual issue. To restore the animation in the submitted version, you can do one of the following:
+> * **Option 1 (Recommended):** Copy the `include/UI/ScoringOverlay.h` file from this repository and replace the one in your project.
+> * **Option 2 (Manual Fix):** Open `ScoringOverlay.h` and initialize `anchorDistance` to a large value (e.g., `1000000000` or `1e9`) directly inside the struct definition.
 
 > **Final Project - Introduction to Computer Science** > **University of Science, VNU-HCM (HCMUS)** > **Faculty of Information Technology**
 
