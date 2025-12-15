@@ -50,21 +50,39 @@ The game supports standard Go rules including Capture, Ko, Suicide restrictions,
 
 ## 📂 Project Structure
 
-The project follows a modular architecture separating Logic, AI, and UI.
+The source code is organized into modules to separate the User Interface from the Game Logic.
 
 ```text
 GoGame/
-├── bin/                 # Executables and DLLs
-│   ├── GoGame.exe
-│   ├── pachi/           # External AI Engine
-│   │   ├── pachi.exe
-│   │   └── patterns.spat
-│   └── *.dll            # SFML & MinGW DLLs
-├── src/                 # Source files (.cpp)
-├── include/             # Header files (.h)
-├── resources/           # Static Assets
-│   ├── fonts/
-│   ├── images/
-│   └── sounds/
-├── assets/              # Runtime Data (Saves, Settings)
+├── src/                     # Source files (.cpp)
+│   ├── main.cpp             # Application Entry Point
+│   ├── GameCore/            # Game Logic & AI Implementation
+│   │   ├── Game.cpp
+│   │   ├── Board.cpp
+│   │   ├── BotManager.cpp
+│   │   └── ...
+│   └── UI/                  # User Interface Implementation
+│       ├── MainMenu.cpp
+│       ├── GamePlay.cpp
+│       ├── ScoringOverlay.cpp
+│       └── ...
+├── include/                 # Header files (.h)
+│   ├── GameCore/            # Logic Headers
+│   │   ├── Game.h
+│   │   ├── Board.h
+│   │   ├── IBot.h
+│   │   └── ...
+│   └── UI/                  # UI Headers
+│       ├── MainMenu.h
+│       ├── GamePlay.h
+│       ├── Button.h
+│       └── ...
+├── resources/               # Static Assets (Fonts, Images, Sounds)
+│   ├── fonts                
+│   ├── images
+│   └── sounds
+├── assets/                  # Runtime Data & External Engines
+│   ├── saves/               # Store data of saved matches
+│   ├── pachi/               # Store the data of bot (Pachi)
+│   └── setting.txt          # Store the saved setting
 └── README.md
