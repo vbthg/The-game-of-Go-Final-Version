@@ -5,6 +5,12 @@
 ![Platform](https://img.shields.io/badge/Platform-Windows-lightgrey.svg)
 ![Course](https://img.shields.io/badge/Course-Intro%20to%20Programming-orange.svg)
 
+> **⚠️ Important Note regarding the GitHub Version vs. Submitted Version:**
+>
+> During the final optimization phase on the submission deadline, I attempted to refactor the code and enhance the Scoring Phase effects. Unfortunately, this introduced a regression in the **Territory Visualization**: I removed the explicit initialization in the constructor to optimize performance but inadvertently forgot to add default member initialization inside the struct.
+>
+> As a result, the *territory search process animation* (the wave effect) might be missing in the submitted zip package. **The source code hosted here on GitHub fixes this issue and represents the definitive, fully functional version of the project.**
+
 > **Final Project - Introduction to Computer Science** > **University of Science, VNU-HCM (HCMUS)** > **Faculty of Information Technology**
 
 ## 📖 Overview
