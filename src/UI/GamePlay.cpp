@@ -1424,7 +1424,7 @@ void GamePlay::saveThumbnail(const std::string& filename)
 
     sf::Sprite stoneCopy;
     float originalPaddingTop = 80.f;
-    float originalPaddingBot = 25.f;
+    float originalPaddingBot = (m_boardSize == 19 ? 25.f : m_boardSize == 13 ? 40.f : 60.f);
     float scaledPaddingTop = originalPaddingTop * scaleFactor;
     float scaledPaddingBot = originalPaddingBot * scaleFactor;
     float scaledBoardWidth = 400.f - (scaledPaddingTop + scaledPaddingBot);
@@ -1485,7 +1485,7 @@ void GamePlay::performLoadGame(const std::string& filePath)
 
         float boardDisplaySize = 740.f;
         float paddingTop = 80.f;
-        float paddingBot = 25.f;
+        float paddingBot = (m_boardSize == 19 ? 25.f : m_boardSize == 13 ? 40.f : 60.f);
         float boardClickableSize = boardDisplaySize - (paddingTop + paddingBot);
 
         m_cellSpacing = boardClickableSize / (m_boardSize - 1);
