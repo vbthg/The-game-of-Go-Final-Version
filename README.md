@@ -13,7 +13,11 @@
 > * **Option 1 (Recommended):** Copy the `include/UI/ScoringOverlay.h` file from this repository and replace the one in your project.
 > * **Option 2 (Manual Fix):** Open `ScoringOverlay.h` and initialize `anchorDistance` to a large value (e.g., `1000000000` or `1e9`) directly inside the struct definition.
 
-> **Final Project - Introduction to Computer Science** > **University of Science, VNU-HCM (HCMUS)** > **Faculty of Information Technology**
+> **Final Project - Introduction to Computer Science**
+> 
+> **University of Science, VNU-HCM (HCMUS)**
+> 
+> **Faculty of Information Technology**
 
 ## 📖 Overview
 
